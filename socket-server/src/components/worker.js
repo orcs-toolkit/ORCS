@@ -4,10 +4,9 @@ const socketio = require('socket.io');
 const session = require('express-session');
 const RedisStore = require('connect-redis')(session);
 const redisAdapter = require('@socket.io/redis-adapter');
-const { errorHandler, NotFoundError } = require('@ssktickets/common');
+const { errorHandler } = require('@ssktickets/common');
 const cors = require('cors');
 const passport = require('passport');
-const sharedsession = require('express-socket.io-session');
 const helmet = require('helmet');
 const morgan = require('morgan');
 

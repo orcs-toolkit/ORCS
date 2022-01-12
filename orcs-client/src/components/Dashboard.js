@@ -2,6 +2,7 @@ import React from 'react';
 import { Container, Row, Col } from 'shards-react';
 import { TailSpin } from 'react-loader-spinner';
 
+import socket from '../socket/socketInit';
 import OsInfo from './utilities/system-components/OsInfo';
 import CpuInfo from './utilities/system-components/CpuInfo';
 import MemInfo from './utilities/system-components/MemInfo';
@@ -19,9 +20,11 @@ class Dashboard extends React.Component {
 		this._fetchData = true;
 
 		if (this._fetchData) {
-			window.api.receive('sysInfo:fetch', (data, event) => {
+			socket.on('data', (data) => {
+				var currentState = { ...this.state.perfData };
+				currentState[data.macA] = data;
 				this.setState({
-					perfData: data,
+					perfData: currentState,
 				});
 			});
 		}
