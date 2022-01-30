@@ -7,7 +7,6 @@ import redisAdapter from '@socket.io/redis-adapter';
 import cors from 'cors';
 import passport from 'passport';
 import helmet from 'helmet';
-import morgan from 'morgan';
 import { morganMiddleware } from '../middlewares/morganMiddleware.mjs';
 
 import { routes } from '../routes/index.mjs';

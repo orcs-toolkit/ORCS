@@ -1,6 +1,6 @@
 const { app, BrowserWindow, ipcMain } = require('electron');
 const path = require('path');
-const systemInfo = require('./app/systemInfo');
+const systemInfo = require('./systemInfo');
 
 let splashWindow, mainWindow, sysInfoInterval;
 
@@ -60,13 +60,11 @@ app.on('activate', () => {
 	if (mainWindow === null) createWindow();
 });
 
-sysInfoInterval = setInterval(() => {
-	systemInfo()
-		.then((data) => {
-			data.isActive = true;
-			mainWindow.webContents.send('sysInfo:fetch', data);
-		})
-		.catch((err) => console.log(err));
-}, 1000);
-
-// mainWindow.webContents.send('sysInfoMetrics', 'data');
+// sysInfoInterval = setInterval(() => {
+// 	systemInfo()
+// 		.then((data) => {
+// 			data.isActive = true;
+// 			mainWindow.webContents.send('sysInfo:fetch', data);
+// 		})
+// 		.catch((err) => console.log(err));
+// }, 1000);
