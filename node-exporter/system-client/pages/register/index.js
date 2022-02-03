@@ -1,5 +1,6 @@
 import Layout from '../../components/Layout';
 import Link from 'next/link';
+import Image from 'next/image';
 
 export default function Register() {
 	return (
@@ -31,7 +32,7 @@ export default function Register() {
 															/>
 															<label
 																className="form-label"
-																for="form3Example1c"
+																htmlFor="form3Example1c"
 															>
 																Your Name
 															</label>
@@ -48,7 +49,7 @@ export default function Register() {
 															/>
 															<label
 																className="form-label"
-																for="form3Example3c"
+																htmlFor="form3Example3c"
 															>
 																Your Email
 															</label>
@@ -65,16 +66,16 @@ export default function Register() {
 															/>
 															<label
 																className="form-label"
-																for="form3Example4c"
+																htmlFor="form3Example4c"
 															>
 																Password
 															</label>
 														</div>
 													</div>
 
-													<div class="dropdown">
+													<div className="dropdown">
 														<a
-															class="dropdown-toggle"
+															className="dropdown-toggle"
 															role="button"
 															id="dropdownMenuButton"
 															data-mdb-toggle="dropdown"
@@ -83,31 +84,34 @@ export default function Register() {
 															ROLE
 														</a>
 														<ul
-															class="dropdown-menu"
+															className="dropdown-menu"
 															aria-labelledby="dropdownMenuButton"
 														>
 															<li>
-																<a class="dropdown-item" href="#">
+																<a className="dropdown-item" href="#">
 																	Student
 																</a>
 															</li>
 															<li>
-																<a class="dropdown-item" href="#">
+																<a className="dropdown-item" href="#">
 																	Faculty
 																</a>
 															</li>
 															<li>
-																<a class="dropdown-item" href="#">
+																<a className="dropdown-item" href="#">
 																	Guest
 																</a>
 															</li>
 														</ul>
 													</div>
 
-													<div class="form-check d-flex justify-content-center mb-5">
-														<label class="form-check-label" for="form2Example3">
+													<div className="form-check d-flex justify-content-center mb-5">
+														<label
+															className="form-check-label"
+															htmlFor="form2Example3"
+														>
 															Already Registered?{' '}
-															<Link href="/signin">
+															<Link passHref href="/signin">
 																<a style={{ color: '#336EFF' }}>Sign in!</a>
 															</Link>
 														</label>
@@ -124,7 +128,9 @@ export default function Register() {
 												</form>
 											</div>
 											<div className="col-md-10 col-lg-6 col-xl-7 d-flex align-items-center order-1 order-lg-2">
-												<img
+												<Image
+													width="800"
+													height="500"
 													src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-registration/draw1.webp"
 													className="img-fluid"
 													alt="Sample image"

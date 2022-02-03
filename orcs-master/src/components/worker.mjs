@@ -7,8 +7,8 @@ import redisAdapter from '@socket.io/redis-adapter';
 import cors from 'cors';
 import passport from 'passport';
 import helmet from 'helmet';
-import { morganMiddleware } from '../middlewares/morganMiddleware.mjs';
 
+import { morganMiddleware } from '../middlewares/morganMiddleware.mjs';
 import { routes } from '../routes/index.mjs';
 import { redisClient } from '../services/redis-init.mjs';
 import { socketMain } from './socketMain.mjs';
@@ -90,7 +90,7 @@ export function isWorker() {
 	// io.use(wrap(passport.authenticate(['jwt', 'google'])));
 
 	io.on('connection', (socket) => {
-		socketMain(io, socket);
+		socketMain(io, socket, cluster.worker.id);
 		logger.worker(`Connected to worker: ${cluster.worker.id}`);
 		// console.log(`Session: ${socket.request.sessionID}`);
 	});

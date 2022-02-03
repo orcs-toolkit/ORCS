@@ -10,7 +10,7 @@ var cookieExtractor = function (req) {
 
 var opts = {
 	jwtFromRequest: cookieExtractor,
-	secretOrKey: process.env.SECRET_KEY,
+	secretOrKey: process.env.SECRET_KEY || 'asdf',
 };
 
 passport.serializeUser((user, done) => {

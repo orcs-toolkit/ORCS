@@ -1,4 +1,5 @@
 import Head from 'next/head';
+import Script from 'next/script';
 import Footer from './Footer';
 
 export default function Layout({ children }) {
@@ -23,12 +24,12 @@ export default function Layout({ children }) {
 					href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.10.2/mdb.min.css"
 					rel="stylesheet"
 				/>
-
-				<script
-					type="text/javascript"
-					src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.10.2/mdb.min.js"
-				></script>
 			</Head>
+
+			<Script
+				type="text/javascript"
+				src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.10.2/mdb.min.js"
+			></Script>
 
 			<div> {children} </div>
 

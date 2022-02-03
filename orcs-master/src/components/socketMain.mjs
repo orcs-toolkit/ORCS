@@ -1,6 +1,7 @@
 import dotenv from 'dotenv';
 dotenv.config();
 import mongoose from 'mongoose';
+
 import {
 	checkAndAdd,
 	setActiveState,
@@ -10,24 +11,16 @@ import { Logger } from '../services/logger.mjs';
 
 const logger = new Logger();
 
-(async () => {
-	if (!process.env.SECRET_KEY) {
-		logger.error('SECRET_KEY not defined!');
-	}
+export function socketMain(io, socket, workerId) {
+	(async () => {
+		try {
+			await mongoose.connect(process.env.MONGO_URI);
+			logger.workerInfo(`Worker: ${workerId} connected to MongoDB`);
+		} catch (err) {
+			logger.error(err);
+		}
+	})();
 
-	if (!process.env.MONGO_URI) {
-		logger.error('MONGO_URI not specified!');
-	}
-
-	try {
-		await mongoose.connect(process.env.MONGO_URI);
-		logger.workerInfo('connected to MongoDB');
-	} catch (err) {
-		throw new Error(err);
-	}
-})();
-
-export function socketMain(io, socket) {
 	let macA;
 
 	// console.log('Socket Session: ', socket.request.session);

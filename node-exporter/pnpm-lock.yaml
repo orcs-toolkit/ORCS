@@ -5,6 +5,7 @@ specifiers:
   dotenv: ^10.0.0
   farmhash: ^3.2.2
   helmet: ^5.0.1
+  nanospinner: ^1.0.0
   socket.io-client: ^4.4.1
   systeminformation: ^5.9.17
 
@@ -13,6 +14,7 @@ dependencies:
   dotenv: 10.0.0
   farmhash: 3.2.2
   helmet: 5.0.1
+  nanospinner: 1.0.0
   socket.io-client: 4.4.1
   systeminformation: 5.9.17
 
@@ -253,6 +255,12 @@ packages:
     resolution: {integrity: sha512-sGkPx+VjMtmA6MX27oA4FBFELFCZZ4S4XqeGOXCv68tT+jb3vk/RyaKWP0PTKyWtmLSM0b+adUTEvbs1PEaH2w==}
     dev: false
 
+  /nanospinner/1.0.0:
+    resolution: {integrity: sha512-14c2r2QQ9xfTmdbqdF51FKCNvww+0ZON9GeEHur+pBdOufoFvxD4CZQRaYWmFrGH3Nuv7PZ/9Q+wsV+hFSp32g==}
+    dependencies:
+      picocolors: 1.0.0
+    dev: false
+
   /napi-build-utils/1.0.2:
     resolution: {integrity: sha512-ONmRUqK7zj7DWX0D9ADe03wbwOBZxNAfF20PlGfCWQcD3+/MakShIHrMqx9YwPTfxDdF1zLeL+RGZiR9kGMLdg==}
     dev: false
@@ -299,6 +307,10 @@ packages:
 
   /parseuri/0.0.6:
     resolution: {integrity: sha512-AUjen8sAkGgao7UyCX6Ahv0gIK2fABKmYjvP4xmy5JaKvcbTRueIqIPHLAfq30xJddqSE033IOMUSOMCcK3Sow==}
+    dev: false
+
+  /picocolors/1.0.0:
+    resolution: {integrity: sha512-1fygroTLlHu66zi26VoTDv8yRgm0Fccecssto+MhsZ0D/DGW2sm8E8AjW7NU5VVTRt5GxbeZ5qBuJr+HyLYkjQ==}
     dev: false
 
   /prebuild-install/7.0.0:

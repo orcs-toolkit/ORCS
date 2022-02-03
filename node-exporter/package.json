@@ -16,6 +16,7 @@
     "dotenv": "^10.0.0",
     "farmhash": "^3.2.2",
     "helmet": "^5.0.1",
+    "nanospinner": "^1.0.0",
     "socket.io-client": "^4.4.1",
     "systeminformation": "^5.9.17"
   }

@@ -2,6 +2,7 @@ import cluster from 'cluster';
 import net from 'net';
 import farmhash from 'farmhash';
 import os from 'os';
+
 import { Logger } from '../services/logger.mjs';
 
 const PORT = process.env.PORT || 4000;
@@ -9,7 +10,7 @@ const num_processes = process.env.THREADS || os.cpus().length;
 
 const logger = new Logger();
 
-export function isMaster() {
+export async function isMaster() {
 	let workers = [];
 
 	// Helper function for spawning worker at index 'i'.

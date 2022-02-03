@@ -1,5 +1,6 @@
 import Layout from '../components/Layout';
 import Link from 'next/link';
+import Image from 'next/image';
 
 export default function Home() {
 	return (
@@ -25,7 +26,7 @@ export default function Home() {
 													className="card text-white bg-secondary p-md-3"
 													style={{ alignItems: 'center' }}
 												>
-													<Link href="/register">
+													<Link passHref href="/register">
 														<h1>Register</h1>
 													</Link>
 												</a>
@@ -37,13 +38,15 @@ export default function Home() {
 													className="card text-white bg-dark p-md-3"
 													style={{ alignItems: 'center' }}
 												>
-													<Link href="/signin">
+													<Link passHref href="/signin">
 														<h1>Login</h1>
 													</Link>
 												</a>
 											</div>
 											<div className="col-md-10 col-lg-6 col-xl-7 d-flex align-items-center order-1 order-lg-2">
-												<img
+												<Image
+													width="800"
+													height="500"
 													src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-registration/draw1.webp"
 													className="img-fluid"
 													alt="Sample image"
