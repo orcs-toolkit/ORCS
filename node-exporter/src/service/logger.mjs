@@ -13,7 +13,6 @@ class Logger {
 	error(e, ...op) {
 		const prefix = `[${chalk.redBright('ERROR')}]`;
 		console.error(`${prefix} >`, e, ...op);
-		throw new Error(e);
 	}
 
 	warn(m, ...op) {
@@ -31,15 +30,9 @@ class Logger {
 		console.log(`${prefix} >`, m, ...op);
 	}
 
-	worker(m, ...op) {
-		const prefix = `[${chalk.bgCyan('WORKER')}]`;
+	success(m, ...op) {
+		const prefix = `[${chalk.greenBright('SUCCESS')}]`;
 		console.log(`${prefix} >`, m, ...op);
-	}
-
-	workerInfo(m, ...op) {
-		const worker = `${chalk.bgCyan('WORKER')}`;
-		const info = `${chalk.blueBright('INFO')}`;
-		console.log(`[${worker} ${info}] >`, m, ...op);
 	}
 }
 
