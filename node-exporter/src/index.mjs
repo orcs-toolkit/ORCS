@@ -35,9 +35,9 @@ socket.io.once('reconnect_error', () => {
 	logger.error('Error connecting to the master server');
 });
 
-socket.io.on('reconnect', () => {
-	logger.debug('Reconnecting...');
-});
+// socket.io.on('reconnect', () => {
+// 	logger.debug('Reconnecting...');
+// });
 
 socket.io.on('reconnect_failed', () => {
 	spinner2.error({ text: 'Failed to reconnect to server :(' });
