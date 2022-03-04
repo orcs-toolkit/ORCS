@@ -30,7 +30,7 @@ export function socketMain(socket) {
 			sysInfo()
 				.then((data) => {
 					data.macA = macA;
-					data.role = global.kempu;
+					data.role = global.role;
 					var x = {};
 					var systemMac = { ...x };
 					systemMac[macA] = data;

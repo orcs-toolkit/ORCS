@@ -7,8 +7,6 @@ import { createSpinner } from 'nanospinner';
 
 import { Logger } from './service/logger.mjs';
 import { socketMain } from './socketMain.mjs';
-import routes from './routes/login.mjs';
-const loginRoute = routes(io);
 
 const logger = new Logger();
 const sleep = (ms = 2000) => new Promise((r) => setTimeout(r, ms));
@@ -16,13 +14,12 @@ const app = express();
 app.use(express.json());
 app.set('socket.io-client', io);
 
-global.kempu = 'default';
+global.role = 'default';
 
-app.post('/test', loginRoute.index);
-app.post('/checkResponse', async (req, res) => {
-	kempu = req.body.role;
-	console.log(kempu);
-	res.send(kempu);
+app.post('/login', async (req, res) => {
+	role = req.body.role;
+	console.log(role);
+	res.send(role);
 });
 
 const spinner = createSpinner(
