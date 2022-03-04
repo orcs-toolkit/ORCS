@@ -66,4 +66,8 @@ export function socketMain(io, socket, workerId) {
 	socket.on('perfData', (data) => {
 		io.to('admin').emit('data', data);
 	});
+
+	socket.on('testRoute', (data) => {
+		console.log(data);
+	});
 }

@@ -1,3 +1,4 @@
+import express from 'express';
 import dotenv from 'dotenv';
 dotenv.config();
 
@@ -6,9 +7,23 @@ import { createSpinner } from 'nanospinner';
 
 import { Logger } from './service/logger.mjs';
 import { socketMain } from './socketMain.mjs';
+import routes from './routes/login.mjs';
+const loginRoute = routes(io);
 
 const logger = new Logger();
 const sleep = (ms = 2000) => new Promise((r) => setTimeout(r, ms));
+const app = express();
+app.use(express.json());
+app.set('socket.io-client', io);
+
+global.kempu = 'default';
+
+app.post('/test', loginRoute.index);
+app.post('/checkResponse', async (req, res) => {
+	kempu = req.body.role;
+	console.log(kempu);
+	res.send(kempu);
+});
 
 const spinner = createSpinner(
 	'Checking if necessary configuration is set...'
@@ -29,6 +44,7 @@ let socket = io(process.env.SOCKET_URI, {
 	reconnectionDelayMax: 5000,
 	reconnectionAttempts: 5,
 });
+
 socketMain(socket);
 
 socket.io.once('reconnect_error', () => {
@@ -60,4 +76,8 @@ process.on('SIGINT', () => {
 	socket.disconnect(true);
 	spinner2.error({ text: 'Received SIGINT shuting down...' });
 	process.exit(1);
+});
+
+app.listen(3001, () => {
+	console.log('express server running');
 });
