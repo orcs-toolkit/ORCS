@@ -4,20 +4,12 @@ import { Server } from 'socket.io';
 import session from 'express-session';
 import redisstore from 'connect-redis';
 import redisAdapter from '@socket.io/redis-adapter';
-import cors from 'cors';
 import passport from 'passport';
-import helmet from 'helmet';
 
-import { morganMiddleware } from '../middlewares/morganMiddleware.mjs';
-import { routes } from '../routes/index.mjs';
 import { redisClient } from '../services/redis-init.mjs';
 import { socketMain } from './socketMain.mjs';
 import { Logger } from '../services/logger.mjs';
 const logger = new Logger();
-
-// Passport config files
-import('../services/jwt-auth.mjs');
-import('../services/google-auth.mjs');
 
 var RedisStore = redisstore(session);
 var sessionStore = new RedisStore({ client: redisClient });
@@ -37,21 +29,6 @@ export function isWorker() {
 
 	// We don't need a port here because Master processes the requests.
 	let app = express();
-	app.use(express.json());
-	app.use(
-		cors({
-			origin: true,
-			credentials: true,
-		})
-	);
-	app.use(sessionMiddleware);
-	app.use(passport.initialize());
-	app.use(passport.session());
-	app.use(helmet());
-	app.use(morganMiddleware);
-
-	// Routes
-	app.use(routes);
 
 	// Don't expose internal server to outside world.
 	const server = app.listen(0, 'localhost');
