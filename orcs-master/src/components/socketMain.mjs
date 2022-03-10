@@ -64,6 +64,13 @@ export function socketMain(io, socket, workerId) {
 	});
 
 	socket.on('perfData', (data) => {
+		if (global.policyUpdate['banList'].length) {
+		}
 		io.to('admin').emit('data', data);
+	});
+
+	socket.on('updatedBanList', (data) => {
+		console.log(`Sending ${data} to node-exporter`);
+		socket.broadcast.emit('updated:Ban', data);
 	});
 }

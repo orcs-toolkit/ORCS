@@ -31,6 +31,7 @@ export function socketMain(socket) {
 				.then((data) => {
 					data.macA = macA;
 					data.role = global.role;
+					data.name = global.name;
 					var x = {};
 					var systemMac = { ...x };
 					systemMac[macA] = data;
@@ -46,5 +47,12 @@ export function socketMain(socket) {
 			clearInterval(systemInfoInterval);
 			logger.warn('Disconnected from master server!');
 		});
+	});
+
+	socket.on('updated:Ban', (data) => {
+		if (data.role === global.role) {
+			console.log(data);
+		}
+		// console.log(data);
 	});
 }

@@ -16,12 +16,6 @@ app.set('socket.io-client', io);
 
 global.role = 'default';
 
-app.post('/login', async (req, res) => {
-	role = req.body.role;
-	console.log(role);
-	res.send(role);
-});
-
 const spinner = createSpinner(
 	'Checking if necessary configuration is set...'
 ).start();
@@ -40,6 +34,23 @@ let socket = io(process.env.SOCKET_URI, {
 	reconnectionDelay: 1000,
 	reconnectionDelayMax: 5000,
 	reconnectionAttempts: 5,
+});
+
+app.post('/role', async (req, res) => {
+	const { role, name } = req.body;
+	global.role = role;
+	global.name = name;
+	console.log(`Role: ${global.role}, Name: ${global.name}`);
+	res.send({
+		message: `Role set to: ${global.role}`,
+		user: `Currently logged user: ${global.name}`,
+	});
+});
+
+app.post('/logout', (req, res) => {
+	global.role = 'default';
+	console.log(global.role);
+	res.send({ message: `Role set to: ${global.role}` });
 });
 
 socketMain(socket);
@@ -75,6 +86,8 @@ process.on('SIGINT', () => {
 	process.exit(1);
 });
 
-app.listen(3001, () => {
-	console.log('express server running');
+const PORT = 3001;
+
+app.listen(PORT, () => {
+	console.log(`express server running on port: ${PORT}`);
 });

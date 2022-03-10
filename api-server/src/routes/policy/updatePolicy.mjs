@@ -3,20 +3,26 @@ import { Policy } from '../../models/Policy.mjs';
 
 const router = express.Router();
 
-router.post('/:id', async (req, res) => {
-	const policy = await Policy.findById(req.params.id);
+router.post('/:role', async (req, res) => {
+	const policy = await Policy.findOneAndUpdate(
+		{
+			role: req.params.role,
+		},
+		{
+			$set: {
+				banList: req.body.banList,
+			},
+		},
+		{
+			new: true,
+		}
+	);
 
 	if (!policy)
 		res.status(401).send({
 			message: 'Policy not found!',
 		});
 
-	policy.set({
-		role: req.body.role,
-		banList: req.body.banList,
-	});
-
-	await policy.save();
 	res.status(201).send({
 		message: 'Successfully updated policy',
 		policy,
