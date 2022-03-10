@@ -13,7 +13,6 @@ class Logger {
 	error(e, ...op) {
 		const prefix = `[${chalk.redBright('ERROR')}]`;
 		console.error(`${prefix} >`, e, ...op);
-		throw new Error(e);
 	}
 
 	warn(m, ...op) {
