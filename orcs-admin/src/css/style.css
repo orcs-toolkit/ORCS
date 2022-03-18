@@ -45408,5 +45408,35 @@ html[dir="rtl"] [direction="rtl"][data-sidebar-style="compact"]:not([data-layout
     color: #fff;
 }
 
-
+.react-bootstrap-table .table-bordered {
+    border-top: none;
+  }
+  
+  .react-bootstrap-table th {
+    position: sticky;
+    top: 0;
+    background-color: #fff;
+    border-top: none;
+  }
+  
+  .react-bootstrap-table th::before {
+    position: absolute;
+    content: '';
+    top: 0;
+    left: -2px;
+    width: calc( 100% + 2px);
+    height: 1px;;
+    background-color: #dee2e6;
+  }
+  
+  .react-bootstrap-table th::after {
+    position: absolute;
+    content: '';
+    bottom: -2px;
+    left: -2px;
+    width: calc( 100% + 2px);
+    height: 1px;
+    background-color: #dee2e6;
+  }
+  
 /*# sourceMappingURL=style.css.map */

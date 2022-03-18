@@ -50,7 +50,7 @@ const Spinearea = () => {
       options={options}
       series={series}
       type="area"
-      height="350"
+      height="380"
     />
   );
 };
