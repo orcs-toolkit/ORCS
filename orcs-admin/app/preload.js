@@ -1,4 +1,4 @@
-const { contextBridge, ipcRenderer } = require('electron');
+const { contextBridge, ipcRenderer, Notification } = require('electron');
 
 contextBridge.exposeInMainWorld('api', {
 	send: (channel, data) => {
@@ -8,7 +8,7 @@ contextBridge.exposeInMainWorld('api', {
 		}
 	},
 	receive: (channel, func) => {
-		let validChannels = ['sysInfo:fetch'];
+		let validChannels = ['fromMain'];
 		if (validChannels.includes(channel)) {
 			ipcRenderer.on(channel, (event, ...args) => func(...args));
 		}

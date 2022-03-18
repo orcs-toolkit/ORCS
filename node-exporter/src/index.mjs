@@ -1,33 +1,16 @@
-import express from 'express';
 import dotenv from 'dotenv';
 dotenv.config();
 
+import express from 'express';
 import io from 'socket.io-client';
-import { createSpinner } from 'nanospinner';
 
-import { Logger } from './service/logger.mjs';
 import { socketMain } from './socketMain.mjs';
+import { loadingAnim } from './cli/loadingAnim.mjs';
 
-const logger = new Logger();
-const sleep = (ms = 2000) => new Promise((r) => setTimeout(r, ms));
 const app = express();
 app.use(express.json());
-app.set('socket.io-client', io);
 
 global.role = 'default';
-
-const spinner = createSpinner(
-	'Checking if necessary configuration is set...'
-).start();
-await sleep();
-
-const spinner2 = createSpinner('Attempting to reconnect...');
-
-if (!process.env.SOCKET_URI) {
-	spinner.error({ text: 'SOCKET_URI not defined!' });
-	process.exit(1);
-}
-spinner.success({ text: 'configuration successful' });
 
 let socket = io(process.env.SOCKET_URI, {
 	reconnection: true,
@@ -35,6 +18,8 @@ let socket = io(process.env.SOCKET_URI, {
 	reconnectionDelayMax: 5000,
 	reconnectionAttempts: 5,
 });
+
+loadingAnim(socket);
 
 app.post('/role', async (req, res) => {
 	const { role, name } = req.body;
@@ -55,39 +40,8 @@ app.post('/logout', (req, res) => {
 
 socketMain(socket);
 
-socket.io.once('reconnect_error', () => {
-	logger.error('Error connecting to the master server');
-});
-
-// socket.io.on('reconnect', () => {
-// 	logger.debug('Reconnecting...');
-// });
-
-socket.io.on('reconnect_failed', () => {
-	spinner2.error({ text: 'Failed to reconnect to server :(' });
-	logger.info('Try restarting the server or try again later');
-});
-
-socket.io.once('reconnect_attempt', async () => {
-	// logger.error('Attempting to reconnect...');
-	await sleep();
-	spinner2.start();
-});
-
-socket.on('connect', () => {
-	spinner2.success({ text: 'connected to master server!' });
-	// logger.success('connected to master server!');
-	// logger.debug(socket.connected);
-});
-
-process.on('SIGINT', () => {
-	socket.disconnect(true);
-	spinner2.error({ text: 'Received SIGINT shuting down...' });
-	process.exit(1);
-});
-
 const PORT = 3001;
 
 app.listen(PORT, () => {
-	console.log(`express server running on port: ${PORT}`);
+	console.log(`\nexpress server running on port: ${PORT}`);
 });

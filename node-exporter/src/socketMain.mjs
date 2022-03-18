@@ -4,6 +4,19 @@ import { sysInfo } from './components/systemInfo.mjs';
 import { Logger } from './service/logger.mjs';
 
 const logger = new Logger();
+var currentdate = new Date();
+var datetime =
+	currentdate.getDate() +
+	'/' +
+	(currentdate.getMonth() + 1) +
+	'/' +
+	currentdate.getFullYear() +
+	' @ ' +
+	currentdate.getHours() +
+	':' +
+	currentdate.getMinutes() +
+	':' +
+	currentdate.getSeconds();
 
 export function socketMain(socket) {
 	socket.on('connect', () => {
@@ -20,6 +33,12 @@ export function socketMain(socket) {
 				break;
 			}
 		}
+
+		const dateData = {
+			type: 'connected',
+			data: `system of mac address: ${macA} has connected to the server with socket ID: ${socket.id} - ${datetime}`,
+		};
+		socket.emit('node:logs', dateData);
 
 		performanceData().then((data) => {
 			data.macA = macA;
@@ -44,6 +63,11 @@ export function socketMain(socket) {
 		}, 1000);
 
 		socket.on('disconnect', () => {
+			const data = {
+				type: 'disconnected',
+				data: `system of mac address: ${macA} has disconnected from server - Last Sync: ${datetime}`,
+			};
+			socket.emit('node:logs', data);
 			clearInterval(systemInfoInterval);
 			logger.warn('Disconnected from master server!');
 		});

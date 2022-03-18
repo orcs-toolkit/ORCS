@@ -10,7 +10,7 @@ class LoginUser extends Component {
 	};
 
 	render() {
-		console.log(this.props.auth);
+		// console.log(this.props.auth);
 		return (
 			<div>
 				<h3>Login</h3>

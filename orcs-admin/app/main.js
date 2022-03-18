@@ -1,8 +1,8 @@
-const { app, BrowserWindow, ipcMain } = require('electron');
+const { app, BrowserWindow, Notification } = require('electron');
+const { ipcMain } = require('electron/main');
 const path = require('path');
-const systemInfo = require('./systemInfo');
 
-let splashWindow, mainWindow, sysInfoInterval;
+let splashWindow, mainWindow;
 
 function createWindow() {
 	mainWindow = new BrowserWindow({
@@ -43,12 +43,27 @@ function createWindow() {
 
 	mainWindow.on('closed', () => {
 		mainWindow = null;
-		clearInterval(sysInfoInterval);
 	});
+}
+
+const NOTIFICATION_TITLE = 'New system added!';
+const NOTIFICATION_BODY = 'System of mac address: 1232134321412 has connected!';
+
+function showNotification() {
+	const notification = new Notification({
+		title: NOTIFICATION_TITLE,
+		body: NOTIFICATION_BODY,
+		urgency: 'normal',
+		timeoutType: 'default',
+	});
+
+	notification.show();
+	notification.on('click', notification.show());
 }
 
 // Electron `app` is ready
 app.on('ready', createWindow);
+app.whenReady().then(createWindow).then(showNotification);
 
 // Quit when all windows are closed - (Not macOS - Darwin)
 app.on('window-all-closed', () => {
@@ -60,11 +75,16 @@ app.on('activate', () => {
 	if (mainWindow === null) createWindow();
 });
 
-// sysInfoInterval = setInterval(() => {
-// 	systemInfo()
-// 		.then((data) => {
-// 			data.isActive = true;
-// 			mainWindow.webContents.send('sysInfo:fetch', data);
-// 		})
-// 		.catch((err) => console.log(err));
-// }, 1000);
+ipcMain.on('toMain', (event, args) => {
+	console.log('Received args', args);
+	const status = args.type === 'connected' ? 'normal' : 'critical';
+	const notification = new Notification({
+		title:
+			args.type === 'connected'
+				? 'New device added!'
+				: 'A device has disconnected!',
+		body: args.data,
+		urgency: status,
+	});
+	notification.show();
+});

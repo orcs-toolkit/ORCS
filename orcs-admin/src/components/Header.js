@@ -1,6 +1,10 @@
 import { Link } from 'react-router-dom';
 
 export default () => {
+	// function showNotification() {
+	// 	window.api.send('toMain', 'Hello from React!!');
+	// }
+
 	return (
 		<nav
 			className="navbar navbar-expand-lg navbar-light sticky-top"
@@ -28,6 +32,9 @@ export default () => {
 					<Link to="/login">
 						<li className="nav-item nav-link">Login</li>
 					</Link>
+					{/* <Link to="" onClick={showNotification}>
+						<li className="nav-item nav-link">Show Notification</li>
+					</Link> */}
 				</ul>
 			</div>
 		</nav>

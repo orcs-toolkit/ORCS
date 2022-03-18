@@ -2,6 +2,7 @@ lockfileVersion: 5.3
 
 specifiers:
   chalk: ^5.0.0
+  commander: ^9.0.0
   dotenv: ^10.0.0
   express: ^4.17.3
   farmhash: ^3.2.2
@@ -12,6 +13,7 @@ specifiers:
 
 dependencies:
   chalk: 5.0.0
+  commander: 9.0.0
   dotenv: 10.0.0
   express: 4.17.3
   farmhash: 3.2.2
@@ -115,6 +117,11 @@ packages:
   /code-point-at/1.1.0:
     resolution: {integrity: sha1-DQcLTQQ6W+ozovGkDi7bPZpMz3c=}
     engines: {node: '>=0.10.0'}
+    dev: false
+
+  /commander/9.0.0:
+    resolution: {integrity: sha512-JJfP2saEKbQqvW+FI93OYUB4ByV5cizMpFMiiJI8xDbBvQvSkIk0VvQdn1CZ8mqAO8Loq2h0gYTYtDFUZUeERw==}
+    engines: {node: ^12.20.0 || >=14}
     dev: false
 
   /console-control-strings/1.1.0:
