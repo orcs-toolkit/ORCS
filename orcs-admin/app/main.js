@@ -46,24 +46,8 @@ function createWindow() {
 	});
 }
 
-const NOTIFICATION_TITLE = 'New system added!';
-const NOTIFICATION_BODY = 'System of mac address: 1232134321412 has connected!';
-
-function showNotification() {
-	const notification = new Notification({
-		title: NOTIFICATION_TITLE,
-		body: NOTIFICATION_BODY,
-		urgency: 'normal',
-		timeoutType: 'default',
-	});
-
-	notification.show();
-	notification.on('click', notification.show());
-}
-
 // Electron `app` is ready
 app.on('ready', createWindow);
-app.whenReady().then(createWindow).then(showNotification);
 
 // Quit when all windows are closed - (Not macOS - Darwin)
 app.on('window-all-closed', () => {
