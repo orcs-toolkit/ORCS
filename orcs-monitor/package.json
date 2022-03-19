@@ -1,0 +1,21 @@
+{
+  "name": "process-monitor",
+  "version": "1.0.0",
+  "main": "index.js",
+  "type": "module",
+  "license": "MIT",
+  "dependencies": {
+    "cli-spinner": "^0.2.10",
+    "eslint": "^8.11.0",
+    "find-process": "^1.4.7",
+    "ps-node": "^0.1.6",
+    "taskkill": "^4.0.0"
+  },
+  "devDependencies": {
+    "mocha": "^9.2.2"
+  },
+  "scripts": {
+    "test": "node_modules/mocha/bin/mocha tests/test.js",
+    "start": "node --es-module-specifier-resolution=node index.js"
+  }
+}
