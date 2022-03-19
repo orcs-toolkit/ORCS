@@ -20,9 +20,11 @@ const App = () => {
   }, []);
 
   useEffect(() => {
-    socket.on("logs", (data) => {
-      window.api.send("toMain", data);
-    });
+    if (socket !== null) {
+      socket.on("logs", (data) => {
+        window.api.send("toMain", data);
+      });
+    }
   }, [socket]);
 
   return (

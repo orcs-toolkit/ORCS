@@ -17,7 +17,6 @@ global.role = "Default";
 const spinner = createSpinner(
     "Checking if necessary configuration is set..."
 ).start();
-await sleep();
 
 const spinner2 = createSpinner("Attempting to reconnect...");
 

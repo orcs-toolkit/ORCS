@@ -12,7 +12,7 @@ const Dashboard = ({ socket }) => {
     const updateListListener = (data) => {
       let tempMacA = Object.keys(data)[0];
       if (data[tempMacA].hasOwnProperty("processData")) {
-        setMachineList({ ...machineList, tempMacA: data[tempMacA] });
+        setMachineList({ ...machineList, [tempMacA]: data[tempMacA] });
       }
     };
     socket.on("data", updateListListener);
