@@ -1,7 +1,7 @@
 import React from "react";
 import ReactApexChart from "react-apexcharts";
 
-const circular1 = () => {
+const Circular1 = () => {
   const options = {
     plotOptions: {
       radialBar: {
@@ -30,4 +30,4 @@ const circular1 = () => {
   );
 };
 
-export default circular1;
+export default Circular1;
