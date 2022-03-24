@@ -1,23 +1,24 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import { Provider } from 'react-redux';
-import { createStore, applyMiddleware, compose } from 'redux';
-import reduxThunk from 'redux-thunk';
+import React from "react";
+import ReactDOM from "react-dom";
+import { Provider } from "react-redux";
+import { Router } from "react-router-dom";
 
-import App from './components/App';
-import reducers from './reducers';
+import store from "./store";
+import history from "./utils/history";
+import { getToken } from "./utils/helper";
+import { fetchUserData } from "./store/slices/authThunk";
 
-const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
-const store = createStore(
-	reducers,
-	composeEnhancers(applyMiddleware(reduxThunk))
-);
+import App from "./components/App";
+
+if (getToken()) {
+  store.dispatch(fetchUserData());
+}
 
 ReactDOM.render(
-	<React.StrictMode>
-		<Provider store={store}>
-			<App />
-		</Provider>
-	</React.StrictMode>,
-	document.getElementById('root')
+  <Router history={history}>
+    <Provider store={store}>
+      <App />
+    </Provider>
+  </Router>,
+  document.getElementById("root")
 );

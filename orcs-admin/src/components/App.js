@@ -7,7 +7,8 @@ import Header from "./Header";
 import Dashboard from "./Routes/Dashboard";
 import MachineDetails from "./Routes/MachineDetails";
 import BanList from "./Routes/PolicyList";
-import Login from "./auth/Login";
+import Login from "./Routes/Login";
+import PrivateRoute from "./PrivateRoute";
 import io from "socket.io-client";
 
 const App = () => {
@@ -16,6 +17,7 @@ const App = () => {
   useEffect(() => {
     let newSocket = io.connect("http://localhost:4000");
     newSocket.emit("clientAuth", "admin");
+    console.log("Newsocket", newSocket);
     setSocket(newSocket);
   }, []);
 
@@ -32,20 +34,23 @@ const App = () => {
       <BrowserRouter>
         <Header />
         <br />
-        <Container fluid className="main-content-container px-4">
+        <Container fluid className="main-content-container px-4 h-100">
           {socket && (
             <Switch>
-              <Route path="/process">
+              <PrivateRoute exact path="/process">
                 <MachineDetails socket={socket} />
-              </Route>
-              <Route path="/banList">
+              </PrivateRoute>
+              <PrivateRoute exact path="/banList">
                 <BanList />
-              </Route>
+              </PrivateRoute>
+              <PrivateRoute exact path="/">
+                <Dashboard socket={socket} />
+              </PrivateRoute>
               <Route path="/login">
                 <Login />
               </Route>
-              <Route exact path="/">
-                <Dashboard socket={socket} />
+              <Route path="/logout">
+                <Login />
               </Route>
             </Switch>
           )}
