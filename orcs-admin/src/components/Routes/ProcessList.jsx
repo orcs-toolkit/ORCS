@@ -23,9 +23,11 @@ const ProcessList = ({ socket }) => {
         if (tempMacA === paramValue) {
           setrole(data[tempMacA].role || "");
           setDataList(
-            data[tempMacA]["processData"]["list"].filter(
-              (p) => p.state !== "unknown"
-            ) || []
+            data[tempMacA]["processData"]["list"]
+              .sort((a, b) =>
+                a.state > b.state ? 1 : b.state > a.state ? -1 : 0
+              )
+              .filter((p) => p.state !== "unknown") || []
           );
         }
       }
@@ -108,7 +110,9 @@ const ProcessList = ({ socket }) => {
                     onClick={() => addSingleProcess(role, rowData.name)}
                     className="btn btn-danger ml-3 shadow btn-xs sharp"
                   >
-                    <i className="bx bx-plus fs-15"></i>
+                    <i
+                      className={`bx bx-${loading ? "circle" : "plus"} fs-15`}
+                    ></i>
                   </Button>
                 )}
               </Table.Cell>

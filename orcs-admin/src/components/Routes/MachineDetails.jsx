@@ -1,7 +1,7 @@
 import React, { useState, useEffect, Fragment } from "react";
 import { useLocation } from "react-router-dom";
 import { Spinner } from "react-bootstrap";
-import DualLine from "../charts/dualLine";
+//import Circular2 from "../charts/circular2";
 import ProcessList from "./ProcessList";
 import {
   Icon01,
