@@ -10,12 +10,13 @@ import { morganMiddleware } from './middlewares/morganMiddleware.mjs';
 import { sessionConfig } from './services/sessionStore.mjs';
 import { routes } from './routes/index.mjs';
 import { Logger } from './services/logger.mjs';
-const logger = new Logger();
 
 //passport config file
 import('./services/passportConfig.mjs');
 
 const app = express();
+const logger = new Logger();
+
 app.use(express.json());
 app.use(
 	cors({

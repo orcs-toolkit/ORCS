@@ -26,6 +26,8 @@
     "nanospinner": "^1.0.0",
     "passport": "^0.5.2",
     "redis": "^4.0.1",
-    "socket.io": "^4.4.1"
+    "socket.io": "^4.4.1",
+    "winston": "^3.6.0",
+    "winston-mongodb": "^5.0.7"
   }
 }

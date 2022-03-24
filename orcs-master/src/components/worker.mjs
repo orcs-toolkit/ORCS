@@ -9,6 +9,7 @@ import passport from 'passport';
 import { redisClient } from '../services/redis-init.mjs';
 import { socketMain } from './socketMain.mjs';
 import { Logger } from '../services/logger.mjs';
+import { winLogger } from '../services/winstonLogger.mjs';
 const logger = new Logger();
 
 var RedisStore = redisstore(session);
@@ -44,9 +45,10 @@ export function isWorker() {
 	// redis-cli monitor.
 	const pubClient = redisClient;
 	pubClient.on('connect', () => logger.workerInfo('connected to Redis Server'));
-	pubClient.on('error', (err) =>
-		logger.error("Couldn't establish connection to redis server")
-	);
+	pubClient.on('error', (err) => {
+		logger.error("Couldn't establish connection to redis server");
+		winLogger.log('error', "Couldn't establish connection to redis server");
+	});
 	const subClient = pubClient.duplicate();
 	io.adapter(redisAdapter(pubClient, subClient));
 

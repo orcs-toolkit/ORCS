@@ -2,8 +2,10 @@ import cluster from 'cluster';
 import net from 'net';
 import farmhash from 'farmhash';
 import os from 'os';
+import mongoose from 'mongoose';
 
 import { Logger } from '../services/logger.mjs';
+import { winLogger } from '../services/winstonLogger.mjs';
 
 const PORT = process.env.PORT || 4000;
 const num_processes = process.env.THREADS || os.cpus().length;
@@ -23,6 +25,17 @@ export async function isMaster() {
 			spawn(i);
 		});
 	};
+
+	try {
+		await mongoose.connect(process.env.MONGO_UR);
+		logger.master('MongoDB connection successful');
+	} catch (e) {
+		winLogger.log('error', {
+			message: `${e.message}`,
+			meta: 'MongoDB ERROR',
+		});
+		logger.error(e.message);
+	}
 
 	// Spwan workers
 	for (var i = 0; i < num_processes; i++) {

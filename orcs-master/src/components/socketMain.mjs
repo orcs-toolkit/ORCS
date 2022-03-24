@@ -1,115 +1,115 @@
-import dotenv from "dotenv";
+import dotenv from 'dotenv';
 dotenv.config();
-import mongoose from "mongoose";
+import mongoose from 'mongoose';
 
 import {
-    checkAndAdd,
-    setActiveState,
-    onMachineDisconnect,
-} from "../services/MachineCheckAndAdd.mjs";
-import { updateLogs, sendLogs } from "../services/LogsUpdate.mjs";
-import { Logger } from "../services/logger.mjs";
+	checkAndAdd,
+	setActiveState,
+	onMachineDisconnect,
+} from '../services/MachineCheckAndAdd.mjs';
+import { Logger } from '../services/logger.mjs';
+import { winLogger } from '../services/winstonLogger.mjs';
 
 const logger = new Logger();
-var currentdate = new Date();
-var datetime =
-    currentdate.getDate() +
-    "/" +
-    (currentdate.getMonth() + 1) +
-    "/" +
-    currentdate.getFullYear() +
-    " @ " +
-    currentdate.getHours() +
-    ":" +
-    currentdate.getMinutes() +
-    ":" +
-    currentdate.getSeconds();
 
 export function socketMain(io, socket, workerId) {
-    (async() => {
-        try {
-            await mongoose.connect(process.env.MONGO_URI);
-            logger.workerInfo(`Worker: ${workerId} connected to MongoDB`);
-        } catch (err) {
-            logger.error(err);
-        }
-    })();
+	(async () => {
+		try {
+			await mongoose.connect(process.env.MONGO_UR);
+			logger.workerInfo(`Worker: ${workerId} connected to MongoDB`);
+		} catch (err) {
+			logger.error(err.message);
+		}
+	})();
 
-    let macA;
+	let macA;
 
-    // console.log('Socket Session: ', socket.request.session);
+	// console.log('Socket Session: ', socket.request.session);
 
-    socket.on("clientAuth", async(key) => {
-        if (key === "student") {
-            // valid UI client joined
-            socket.join("student");
-            logger.info(`Student with ID ${socket.id} joined!`);
-            setActiveState(io);
-        } else if (key === "faculty") {
-            socket.join("faculty");
-            logger.info(`Faculty with ID ${socket.id} joined!`);
-            setActiveState(io);
-        } else if (key === "admin") {
-            socket.join("admin");
-            const dateData = {
-                type: "connected",
-                data: `Admin with ID ${socket.id} joined! - ${datetime}`,
-            };
-            await updateLogs(dateData, io);
-            sendLogs(io);
-            io.to("admin").emit("logs", dateData);
-            logger.info(`Admin with ID ${socket.id} joined!`);
-            setActiveState(io);
-        } else {
-            // invalid client
-            socket.disconnect(true);
-        }
-    });
+	socket.on('clientAuth', async (key) => {
+		if (key === 'student') {
+			// valid UI client joined
+			socket.join('student');
+			logger.info(`Student with ID ${socket.id} joined!`);
+			setActiveState(io);
+		} else if (key === 'faculty') {
+			socket.join('faculty');
+			logger.info(`Faculty with ID ${socket.id} joined!`);
+			setActiveState(io);
+		} else if (key === 'admin') {
+			socket.join('admin');
+			winLogger.log('info', {
+				message: 'disconnected',
+				data: `Admin with ID ${socket.id} joined!`,
+			});
+			io.to('admin').emit('logs', {
+				type: 'connected',
+				data: `Admin with ID ${socket.id} joined!`,
+			});
+			logger.info(`Admin with ID ${socket.id} joined!`);
+			setActiveState(io);
+		} else {
+			// invalid client
+			socket.disconnect(true);
+		}
+	});
 
-    socket.on("logout", async() => {
-        var room = Array.from(socket.rooms);
-        await socket.leave(room[1]);
-        const dateData = {
-            type: "disconnected",
-            data: `Client with socket id: ${socket.id} has left the room ${room[1]}!`,
-        };
-        await updateLogs(dateData, io);
-        sendLogs(io);
-        io.to("admin").emit("logs", dateData);
-        logger.warn(`Leaving room: ${room[1]}`);
-        logger.warn(`Client with socket id: ${socket.id} has left the room!`);
-    });
+	socket.on('logout', async () => {
+		var room = Array.from(socket.rooms);
+		await socket.leave(room[1]);
 
-    socket.on("disconnect", async() => {
-        onMachineDisconnect(macA, io);
-        const dateData = {
-            type: "disconnected",
-            data: `Client with socket id: ${socket.id} has disconnected!`,
-        };
-        await updateLogs(dateData, io);
-        sendLogs(io);
-        io.to("admin").emit("logs", dateData);
-        logger.warn(`Client with socket id: ${socket.id} has disconnected!`);
-    });
+		// winLogger.log('info', {
+		// 	message: 'MASTER SERVER INFO LOGS',
+		// 	type: 'disconnected',
+		// 	data: `Client with socket id: ${socket.id} has left the room ${room[1]}!`,
+		// });
+		winLogger.log('info', {
+			message: 'disconnected',
+			data: `Client with socket id: ${socket.id} has left the room ${room[1]}!`,
+		});
+		io.to('admin').emit('logs', {
+			type: 'disconnected',
+			data: `Client with socket id: ${socket.id} has left the room ${room[1]}!`,
+		});
+		logger.warn(`Leaving room: ${room[1]}`);
+		logger.warn(`Client with socket id: ${socket.id} has left the room!`);
+	});
 
-    socket.on("initPerfData", async(data) => {
-        macA = data.macA;
-        const mongooseResponse = await checkAndAdd(data);
-        logger.info(mongooseResponse);
-    });
+	socket.on('disconnect', async () => {
+		onMachineDisconnect(macA, io);
 
-    socket.on("perfData", (data) => {
-        io.to("admin").emit("data", data);
-    });
+		winLogger.log('info', {
+			message: 'disconnected',
+			data: `Client with socket id: ${socket.id} has disconnected!`,
+		});
 
-    socket.on("updatedBanList", (data) => {
-        console.log(`Sending ${data} to node-exporter`);
-        socket.broadcast.emit("updated:Ban", data);
-    });
+		io.to('admin').emit('logs', {
+			type: 'disconnected',
+			data: `Client with socket id: ${socket.id} has disconnected!`,
+		});
+		logger.warn(`Client with socket id: ${socket.id} has disconnected!`);
+	});
 
-    socket.on("node:logs", async(data) => {
-        await updateLogs(data, io);
-        sendLogs(io);
-        io.to("admin").emit("logs", data);
-    });
+	socket.on('initPerfData', async (data) => {
+		macA = data.macA;
+		const mongooseResponse = await checkAndAdd(data);
+		logger.info(mongooseResponse);
+	});
+
+	socket.on('perfData', (data) => {
+		io.to('admin').emit('data', data);
+	});
+
+	socket.on('updatedBanList', (data) => {
+		console.log(`Sending ${data} to node-exporter`);
+		socket.broadcast.emit('updated:Ban', data);
+	});
+
+	socket.on('node:logs', async (dateData) => {
+		winLogger.log('info', {
+			message: `${dateData.type}`,
+			data: `${dateData.data}`,
+		});
+		io.to('admin').emit('logs', dateData);
+	});
 }
