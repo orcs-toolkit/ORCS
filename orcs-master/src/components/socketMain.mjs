@@ -9,6 +9,7 @@ import {
 } from '../services/MachineCheckAndAdd.mjs';
 import { Logger } from '../services/logger.mjs';
 import { winLogger } from '../services/winstonLogger.mjs';
+import { socket_events } from '../types/events.mjs';
 
 const logger = new Logger();
 
@@ -37,12 +38,12 @@ export function socketMain(io, socket, workerId) {
 			logger.info(`Faculty with ID ${socket.id} joined!`);
 			setActiveState(io);
 		} else if (key === 'admin') {
-			socket.join('admin');
+			socket.join(socket_events.emit.ADMIN);
 			winLogger.log('info', {
 				message: 'disconnected',
 				data: `Admin with ID ${socket.id} joined!`,
 			});
-			io.to('admin').emit('logs', {
+			io.to(socket_events.emit.ADMIN).emit(socket_events.emit.LOGS, {
 				type: 'connected',
 				data: `Admin with ID ${socket.id} joined!`,
 			});
@@ -67,7 +68,7 @@ export function socketMain(io, socket, workerId) {
 			message: 'disconnected',
 			data: `Client with socket id: ${socket.id} has left the room ${room[1]}!`,
 		});
-		io.to('admin').emit('logs', {
+		io.to(socket_events.emit.ADMIN).emit(socket_events.emit.LOGS, {
 			type: 'disconnected',
 			data: `Client with socket id: ${socket.id} has left the room ${room[1]}!`,
 		});
@@ -75,7 +76,7 @@ export function socketMain(io, socket, workerId) {
 		logger.warn(`Client with socket id: ${socket.id} has left the room!`);
 	});
 
-	socket.on('disconnect', async () => {
+	socket.on(socket_events.listen.DISCONNECT, async () => {
 		onMachineDisconnect(macA, io);
 
 		winLogger.log('info', {
@@ -83,33 +84,33 @@ export function socketMain(io, socket, workerId) {
 			data: `Client with socket id: ${socket.id} has disconnected!`,
 		});
 
-		io.to('admin').emit('logs', {
+		io.to(socket_events.emit.ADMIN).emit(socket_events.emit.LOGS, {
 			type: 'disconnected',
 			data: `Client with socket id: ${socket.id} has disconnected!`,
 		});
 		logger.warn(`Client with socket id: ${socket.id} has disconnected!`);
 	});
 
-	socket.on('initPerfData', async (data) => {
+	socket.on(socket_events.listen.INIT_PERF_DATA, async (data) => {
 		macA = data.macA;
 		const mongooseResponse = await checkAndAdd(data);
 		logger.info(mongooseResponse);
 	});
 
-	socket.on('perfData', (data) => {
-		io.to('admin').emit('data', data);
+	socket.on(socket_events.listen.PERF_DATA, (data) => {
+		io.to(socket_events.emit.ADMIN).emit(socket_events.emit.DATA, data);
 	});
 
-	socket.on('updatedBanList', (data) => {
-		console.log(`Sending ${data} to node-exporter`);
-		socket.broadcast.emit('updated:Ban', data);
+	socket.on(socket_events.listen.UPDATE_BAN_LIST, (data) => {
+		logger.info(`Sending ${data} to node-exporter`);
+		socket.broadcast.emit(socket_events.emit.UPDATED_BAN, data);
 	});
 
-	socket.on('node:logs', async (dateData) => {
+	socket.on(socket_events.listen.NODE_LOGS, async (dateData) => {
 		winLogger.log('info', {
 			message: `${dateData.type}`,
 			data: `${dateData.data}`,
 		});
-		io.to('admin').emit('logs', dateData);
+		io.to(socket_events.emit.ADMIN).emit(socket_events.emit.LOGS, dateData);
 	});
 }

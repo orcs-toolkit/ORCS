@@ -22,6 +22,7 @@ specifiers:
   redis: ^4.0.1
   socket.io: ^4.4.1
   socket.io-client: ^4.4.1
+  socket.io-mock: ^1.3.2
   winston: ^3.6.0
   winston-mongodb: ^5.0.7
 
@@ -51,6 +52,7 @@ devDependencies:
   jest: 27.5.1
   nodemon: 2.0.15
   socket.io-client: 4.4.1
+  socket.io-mock: 1.3.2
 
 packages:
 
@@ -2276,7 +2278,6 @@ packages:
 
   /component-emitter/1.3.0:
     resolution: {integrity: sha512-Rd3se6QB+sO1TwqZjscQrurpEPIfO0/yYnSin6Q/rD3mOutHvUrCAhJub3r90uNb+SESBuE0QYoB90YdfatsRg==}
-    dev: false
 
   /concat-map/0.0.1:
     resolution: {integrity: sha1-2Klr13/Wjfd5OnMDajug1UBdR3s=}
@@ -4982,6 +4983,12 @@ packages:
       - bufferutil
       - supports-color
       - utf-8-validate
+    dev: true
+
+  /socket.io-mock/1.3.2:
+    resolution: {integrity: sha512-p4MQBue3NAR8bXIHynRJxK/C+J3I3NpnnpgjptgLFSWv4u9Bdkubf2t0GCmyLmUTi03up0Cx/hQwzQfOpD187g==}
+    dependencies:
+      component-emitter: 1.3.0
     dev: true
 
   /socket.io-parser/4.0.4:
