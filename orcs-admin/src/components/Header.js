@@ -1,6 +1,12 @@
 import { Link } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+
+import { signOut } from "../store/slices/authThunk";
 
 export default () => {
+  const dispatch = useDispatch();
+  const { authenticated } = useSelector((state) => state.auth);
+
   return (
     <nav
       className="navbar navbar-expand-lg navbar-dark sticky-top bg-primary"
@@ -22,12 +28,19 @@ export default () => {
       </button>
       <div className="collapse navbar-collapse" id="navbarNav">
         <ul className="navbar-nav">
-          <Link to="/banList">
-            <li className="nav-item nav-link">Policies List</li>
-          </Link>
-          <Link to="/login">
-            <li className="nav-item nav-link">Login</li>
-          </Link>
+          {authenticated && (
+            <>
+              <Link to="/banList">
+                <li className="nav-item nav-link">Policies List</li>
+              </Link>
+              <li
+                className="nav-item nav-link"
+                onClick={() => dispatch(signOut())}
+              >
+                Logout
+              </li>
+            </>
+          )}
         </ul>
       </div>
     </nav>
