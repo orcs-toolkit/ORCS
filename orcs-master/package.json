@@ -6,7 +6,9 @@
   "type": "module",
   "scripts": {
     "start": "node --experimental-modules src/index.mjs",
-    "serve": "nodemon --experimental-modules src/index.mjs"
+    "serve": "nodemon --experimental-modules src/index.mjs",
+    "test": "jest --watchAll",
+    "test:ci": "jest"
   },
   "keywords": [],
   "author": "",
@@ -29,5 +31,13 @@
     "socket.io": "^4.4.1",
     "winston": "^3.6.0",
     "winston-mongodb": "^5.0.7"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.17.8",
+    "@babel/preset-env": "^7.16.11",
+    "babel-jest": "^27.5.1",
+    "jest": "^27.5.1",
+    "nodemon": "^2.0.15",
+    "socket.io-client": "^4.4.1"
   }
 }

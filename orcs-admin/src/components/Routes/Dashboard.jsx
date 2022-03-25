@@ -10,12 +10,19 @@ const Dashboard = ({ socket }) => {
 
   useEffect(() => {
     const updateListListener = (data) => {
-      let tempMacA = Object.keys(data)[0];
+     
+      var tempMacA = Object.keys(data)[0];
       if (data[tempMacA].hasOwnProperty("processData")) {
-        setMachineList({ ...machineList, [tempMacA]: data[tempMacA] });
+        // setMachineList({ ...machineList, [tempMacA]: data[tempMacA] });
+        setMachineList(prevState => {
+          return {...prevState, [tempMacA]: data[tempMacA]};
+        });
       }
+      // console.log('DEBUG SOCKET:', machineList, data)
     };
-    socket.on("data", updateListListener);
+      socket.on("data", updateListListener);
+      
+      
   }, [socket]);
 
   const toggle = () => {

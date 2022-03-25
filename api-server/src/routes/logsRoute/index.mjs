@@ -1,11 +1,15 @@
 import express from 'express';
-
-import { infoLogsRouter } from './infoLogs.mjs';
-import { errorLogsRouter } from './errorLogs.mjs';
+import { Logs } from '../../models/Logs.mjs';
 
 const router = express.Router();
 
-router.use('/info', infoLogsRouter);
-router.use('/error', errorLogsRouter);
+router.get('/', async (req, res) => {
+	try {
+		const machineLogs = await Logs.find({});
+		res.send(machineLogs);
+	} catch (e) {
+		logger.error(e.message);
+	}
+});
 
 export { router as logsRouter };

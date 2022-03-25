@@ -16,7 +16,7 @@ export const winLogger = createLogger({
 			label: 'MASTER SERVER ERROR LOGS',
 			level: 'error',
 			db: String(process.env.MONGO_URI),
-			collection: 'orcs-error-logs',
+			collection: 'orcs-logs',
 			format: format.combine(format.timestamp(), format.json()),
 			options: {
 				useUnifiedTopology: true,
@@ -27,7 +27,7 @@ export const winLogger = createLogger({
 			label: 'MASTER SERVER INFO LOGS',
 			level: 'info',
 			db: String(process.env.MONGO_URI),
-			collection: 'orcs-info-logs',
+			collection: 'orcs-logs',
 			format: format.combine(format.timestamp(), format.json()),
 			options: {
 				useUnifiedTopology: true,
