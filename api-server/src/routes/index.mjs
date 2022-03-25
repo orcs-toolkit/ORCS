@@ -3,7 +3,7 @@ import { errorHandler } from '@ssktickets/common';
 
 import { authRouter } from './auth/index.mjs';
 import { policyRouter } from './policy/index.mjs';
-import { logsRouter } from './logs/index.mjs';
+import { logsRouter } from './logsRoute/index.mjs';
 
 const router = express.Router();
 
