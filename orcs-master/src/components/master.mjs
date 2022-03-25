@@ -27,8 +27,10 @@ export async function isMaster() {
 	};
 
 	try {
-		await mongoose.connect(process.env.MONGO_UR);
+		await mongoose.connect(process.env.MONGO_URI);
 		logger.master('MongoDB connection successful');
+		await mongoose.connection.close();
+		logger.master('Successfully closed mongoose connection from master');
 	} catch (e) {
 		winLogger.log('error', {
 			message: `${e.message}`,

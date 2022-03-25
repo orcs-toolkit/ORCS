@@ -15,7 +15,7 @@ const logger = new Logger();
 export function socketMain(io, socket, workerId) {
 	(async () => {
 		try {
-			await mongoose.connect(process.env.MONGO_UR);
+			await mongoose.connect(process.env.MONGO_URI);
 			logger.workerInfo(`Worker: ${workerId} connected to MongoDB`);
 		} catch (err) {
 			logger.error(err.message);
