@@ -26,7 +26,7 @@ export const login = createAsyncThunk("auth/login", async (payload) => {
   const Token = response.data.token;
   setToken(Token);
   let user = jwt_decode(Token);
-  history.push("/");
+  history.go("/");
   return { user, accessToken: Token };
 });
 
