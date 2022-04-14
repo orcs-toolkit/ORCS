@@ -72,6 +72,30 @@ const ProcessList = ({ socket }) => {
               <Table.HeaderCell>Process Name</Table.HeaderCell>
               <Table.Cell dataKey="name" />
             </Table.Column>
+            <Table.Column width={160}>
+              <Table.HeaderCell>Path</Table.HeaderCell>
+              <Table.Cell>
+                {(rowData) => (rowData.path !== "" ? rowData.path : "-")}
+              </Table.Cell>
+            </Table.Column>
+            <Table.Column width={140}>
+              <Table.HeaderCell>Cpu Usage</Table.HeaderCell>
+              <Table.Cell>
+                {(rowData) => rowData.cpu.toFixed(2) + "gb"}
+              </Table.Cell>
+            </Table.Column>
+            <Table.Column width={140} fixed>
+              <Table.HeaderCell>Virtual Memory Size</Table.HeaderCell>
+              <Table.Cell dataKey="memVsz" />
+            </Table.Column>
+            <Table.Column width={140} fixed>
+              <Table.HeaderCell>Memory RSS</Table.HeaderCell>
+              <Table.Cell dataKey="memRss" />
+            </Table.Column>
+            <Table.Column width={140} fixed>
+              <Table.HeaderCell>User</Table.HeaderCell>
+              <Table.Cell dataKey="user" />
+            </Table.Column>
             <Table.Column width={140}>
               <Table.HeaderCell>Duration</Table.HeaderCell>
               <Table.Cell>
@@ -100,7 +124,6 @@ const ProcessList = ({ socket }) => {
                 )}
               </Table.Cell>
             </Table.Column>
-
             <Table.Column width={120}>
               <Table.HeaderCell>Add to Ban List</Table.HeaderCell>
               <Table.Cell>

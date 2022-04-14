@@ -7,10 +7,6 @@ const Spinearea = () => {
       name: "series1",
       data: [34, 40, 28, 52, 42, 109, 100],
     },
-    {
-      name: "series2",
-      data: [32, 60, 34, 46, 34, 52, 41],
-    },
   ];
 
   const options = {
@@ -50,7 +46,7 @@ const Spinearea = () => {
       options={options}
       series={series}
       type="area"
-      height="380"
+      height="300"
     />
   );
 };

@@ -1,7 +1,8 @@
 import React, { useState, useEffect, Fragment } from "react";
 import { useLocation } from "react-router-dom";
 import { Spinner } from "react-bootstrap";
-//import Circular2 from "../charts/circular2";
+import Circular2 from "../charts/circular2";
+import DualLine from "../charts/dualLine";
 import ProcessList from "./ProcessList";
 import {
   Icon01,
@@ -59,127 +60,107 @@ const MachineDetails = ({ socket }) => {
           <div className="row col-6">
             <div className="col-12">
               <div className="card flex-lg-column flex-md-row">
-                <div className="py-4 px-2 text-center">
-                  <div className="row border-bottom p-2">
+                <div className="pt-2 px-2 text-center">
+                  <div className="row px-2 pt-2">
                     <div className="col-6">
-                      <div className="profile-image mb-4 mt-2">
-                        {defaultIcon}
-                      </div>
-                      <h4 className="fs-22 text-black ml-3 mb-1">
+                      <div className="profile-image my-2">{defaultIcon}</div>
+                      <h3 className="text-black ml-3 mb-1">
                         UserName: {machineData.userName || "NA"}
-                      </h4>
-                      <h5 className="ml-3 fs-20 py-1">
-                        MacA: {machineData.macA}
-                      </h5>
-                      <h5 className="ml-3 fs-18">Type: {machineData.role}</h5>
+                      </h3>
+                      <h4 className="ml-3 py-1">MacA: {machineData.macA}</h4>
+                      <h4 className="ml-3">Type: {machineData.role}</h4>
                     </div>
-                    <div className="col-6 my-4">
+                    <div className="col-6 my-2">
                       <div className="row">
                         <div className="col-12">
-                          <div className="border rounded m-2">
-                            <h4 className="fs-22 text-black font-w600">
-                              OS Type
-                            </h4>
-                            <span className="text-black">
+                          <div className="border border-primary rounded m-2 py-2">
+                            <h3 className="text-black font-w600">OS Type</h3>
+                            <h5 className="text-black">
                               {machineData.osType.platform} -{" "}
                               {machineData.osType.distro}
-                            </span>
+                            </h5>
                           </div>
                         </div>
                         <div className="col-12">
-                          <div className="border rounded m-2">
-                            <h4 className="fs-22 text-black font-w600">
-                              CPU Model
-                            </h4>
-                            <span className="text-black">
+                          <div className="border border-primary rounded m-2 py-2">
+                            <h3 className="text-black font-w600">CPU Model</h3>
+                            <h5 className="text-black">
                               {machineData.cpu.manufacturer +
                                 " " +
                                 machineData.cpu.brand}
-                            </span>
+                            </h5>
                           </div>
                         </div>
                       </div>
                     </div>
-                  </div>
-                  <div className="row text-center mx-2">
-                    <StyledCard
-                      title={"No. of Cores"}
-                      borderColor={"primary"}
-                      body={machineData.cpu.cores}
-                    />
-                    <StyledCard
-                      title={"CPU Speed"}
-                      borderColor={"danger"}
-                      body={machineData.cpu.speed + " Ghz" || ""}
-                    />
-                    <StyledCard
-                      title={"Total Memory"}
-                      borderColor={"warning"}
-                      body={formatBytes(machineData.mem.total)}
-                    />
-                    <StyledCard
-                      title={"Used Memory"}
-                      borderColor={"info"}
-                      body={formatBytes(machineData.mem.used)}
-                    />
-                    <StyledCard
-                      title={"Free Memory"}
-                      borderColor={"secondary"}
-                      body={formatBytes(machineData.mem.free)}
-                    />
-                    <StyledCard
-                      title={"Is Active"}
-                      borderColor={"success"}
-                      body={machineData.isActive ? "Yes" : "No"}
-                    />
                   </div>
                 </div>
               </div>
             </div>
-            {/* <div className="col-12">
+            <div className="col-12">
               <div className="card">
-                <div className="card-header align-items-center flex-wrap border-0 pb-0">
-                  <h4 className="fs-20 text-black mb-4 mr-3">
+                <div className="card-header align-items-center flex-wrap border-0 pb-0"></div>
+                <div className="card-body pt-0">
+                  <DualLine />
+                  <h4 className="fs-20 text-center text-black mb-4 mr-3">
                     Resource Utilization
                   </h4>
                 </div>
-                <div className="card-body pt-0">
-                  <div className="d-flex">
-                    <span className="mr-4">
-                      <svg
-                        className="mr-2"
-                        width="19"
-                        height="19"
-                        viewBox="0 0 19 19"
-                        fill="none"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <rect width="19" height="19" rx="9.5" fill="#40189D" />
-                      </svg>
-                      View Profile
-                    </span>
-                    <span>
-                      <svg
-                        className="mr-2"
-                        width="19"
-                        height="19"
-                        viewBox="0 0 19 19"
-                        fill="none"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <rect width="19" height="19" rx="9.5" fill="#3F9AE0" />
-                      </svg>
-                      Hire
-                    </span>
-                  </div>
-                  <div className="mt-5">
-                    <DualLine />
-                  </div>
-                </div>
               </div>
-            </div> */}
+            </div>
           </div>
           <div className="col-6">
+            <h2 className="text-center mb-4 mr-3" style={{ color: "#224870" }}>
+              Performance Indicators
+            </h2>
+            <div className="row text-center mx-2">
+              <StyledCard
+                title={"No. of Cores"}
+                borderColor={"#2A4494"}
+                body={machineData.cpu.cores}
+              />
+              <StyledCard
+                title={"CPU Speed"}
+                borderColor={"#224870"}
+                body={machineData.cpu.speed + " Ghz" || ""}
+              />
+              <StyledCard
+                title={"Total Memory"}
+                borderColor={"#224870"}
+                body={formatBytes(machineData.mem.total)}
+              />
+              <StyledCard
+                title={"Used Memory"}
+                borderColor={"#2A4494"}
+                body={formatBytes(machineData.mem.used)}
+              />
+              <StyledCard
+                title={"Memory Usage"}
+                borderColor={"#2A4494"}
+                body={
+                  Math.floor(
+                    (machineData.mem.used / machineData.mem.total) * 100
+                  ) + "%"
+                }
+              />
+              <StyledCard
+                title={"Networks Connected"}
+                borderColor={"#224870"}
+                body={machineData.networkInterfaces.length}
+              />
+              <StyledCard
+                title={"CPU Temperature"}
+                borderColor={"#224870"}
+                body={machineData.cpuTemp.main + "°"}
+              />
+              <StyledCard
+                title={"Is Active"}
+                borderColor={"#2A4494"}
+                body={machineData.isActive ? "Yes" : "No"}
+              />
+            </div>
+          </div>
+          <div className="col-12">
             <ProcessList socket={socket} />
           </div>
         </div>
