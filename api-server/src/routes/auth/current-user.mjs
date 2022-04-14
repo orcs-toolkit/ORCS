@@ -4,12 +4,13 @@ import jwt from 'jsonwebtoken';
 const router = express.Router();
 
 router.get('/', async (req, res) => {
-	if (!req.session.user) return res.status(400).send({ currentUser: null });
+	var header = req.headers.authorization || '';
+	var token = header.split(/\s+/).pop() || '';
+	// console.log(`Header: ${header}, Token: ${token}`);
 
-	// console.log(req.session);
+	if (!header) return res.status(400).send({ currentUser: null });
 
-	// console.log(date.toString());
-	const payload = jwt.verify(req.session.user, String(process.env.SECRET_KEY));
+	const payload = jwt.verify(token, String(process.env.SECRET_KEY));
 	res.status(200).send({ currentUser: payload });
 });
 

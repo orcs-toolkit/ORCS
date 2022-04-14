@@ -24,7 +24,7 @@ router.post(
 		const emailExist = await User.findOne({ email });
 
 		if (emailExist) {
-			res.status(401).send('Email already registered!');
+			return res.status(401).json('Email already registered!');
 		}
 
 		const user = new User({
@@ -42,17 +42,19 @@ router.post(
 			String(process.env.SECRET_KEY)
 		);
 
-		req.session.user = userToken;
-
 		try {
 			const savedUser = await user.save();
 			res.status(201).send({
-				id: savedUser.id,
-				email: savedUser.email,
-				name: savedUser.name,
+				user: {
+					id: savedUser.id,
+					email: savedUser.email,
+					name: savedUser.name,
+				},
+				success: true,
+				token: userToken,
 			});
 		} catch (err) {
-			res.status(400).send({ success: false, message: err });
+			return res.status(400).send({ success: false, message: err });
 		}
 	}
 );

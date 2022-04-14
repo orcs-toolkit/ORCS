@@ -7,7 +7,6 @@ import helmet from 'helmet';
 import mongoose from 'mongoose';
 
 import { morganMiddleware } from './middlewares/morganMiddleware.mjs';
-import { sessionConfig } from './services/sessionStore.mjs';
 import { routes } from './routes/index.mjs';
 import { Logger } from './services/logger.mjs';
 
@@ -24,9 +23,7 @@ app.use(
 		credentials: true,
 	})
 );
-app.use(sessionConfig);
 app.use(passport.initialize());
-app.use(passport.session());
 app.use(helmet());
 app.use(morganMiddleware);
 

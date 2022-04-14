@@ -1,15 +1,9 @@
 import passport from 'passport';
-import { Strategy as JwtStrategy } from 'passport-jwt';
+import { Strategy as JwtStrategy, ExtractJwt } from 'passport-jwt';
 import { User } from '../models/User.mjs';
 
-var cookieExtractor = function (req) {
-	var token = null;
-	if (req && req.session) token = req.session['jwt'];
-	return token;
-};
-
 var opts = {
-	jwtFromRequest: cookieExtractor,
+	jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
 	secretOrKey: process.env.SECRET_KEY || 'asdf',
 };
 

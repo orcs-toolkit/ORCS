@@ -15,4 +15,8 @@ router.get('/', async (req, res) => {
 	}
 });
 
-export { router as getAllPoliciesRouter };
+async function getAllPoliciesExample() {
+	return await Policy.find({});
+}
+
+export { router as getAllPoliciesRouter, getAllPoliciesExample };
