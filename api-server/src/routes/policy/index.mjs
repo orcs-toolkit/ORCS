@@ -13,13 +13,13 @@ import { requestLogin } from '../../middlewares/requestLogin.mjs';
 
 const router = express.Router();
 
-router.use('/getPolicies', getAllPoliciesRouter);
-router.use('/getPolicy', getSinglePolicyRouter);
+router.use('/getPolicies', requestLogin, getAllPoliciesRouter);
+router.use('/getPolicy', requestLogin, getSinglePolicyRouter);
 router.use('/updatePolicy', requestLogin, updatePolicyRouter);
-router.use('/setPolicy', setPolicyRouter);
-router.use('/deletePolicy', deletePolicyRouter);
-router.use('/getRolePolicy', roleBasedPolicyRouter);
-router.use('/getRoleWisePolicy', roleWisePolicyRouter);
-router.use('/updateSinglePolicy', updateSinglePolicyRouter);
+router.use('/setPolicy', requestLogin, setPolicyRouter);
+router.use('/deletePolicy', requestLogin, deletePolicyRouter);
+router.use('/getRolePolicy', requestLogin, roleBasedPolicyRouter);
+router.use('/getRoleWisePolicy', requestLogin, roleWisePolicyRouter);
+router.use('/updateSinglePolicy', requestLogin, updateSinglePolicyRouter);
 
 export { router as policyRouter };

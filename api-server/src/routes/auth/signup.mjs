@@ -15,10 +15,11 @@ router.post(
 			.isLength({ min: 6, max: 24 })
 			.withMessage('Password must be between 6 and 24 characters'),
 		body('name').notEmpty().withMessage('Name cannot be empty!'),
+		body('isAdmin').isBoolean().optional(),
 	],
 	ValidateRequest,
 	async (req, res) => {
-		const { name, email, password } = req.body;
+		const { name, email, password, isAdmin } = req.body;
 
 		// Check if user is already registered to the database
 		const emailExist = await User.findOne({ email });
@@ -31,6 +32,7 @@ router.post(
 			name,
 			email,
 			password,
+			isAdmin,
 		});
 
 		const userToken = jwt.sign(
@@ -38,6 +40,7 @@ router.post(
 				id: user.id,
 				email: user.email,
 				name: user.name,
+				admin: user.isAdmin,
 			},
 			String(process.env.SECRET_KEY)
 		);
@@ -49,6 +52,7 @@ router.post(
 					id: savedUser.id,
 					email: savedUser.email,
 					name: savedUser.name,
+					admin: savedUser.isAdmin,
 				},
 				success: true,
 				token: userToken,

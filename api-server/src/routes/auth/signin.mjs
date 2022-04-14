@@ -19,7 +19,6 @@ router.post(
 	ValidateRequest,
 	async (req, res) => {
 		const { email, password } = req.body;
-		console.log(email, password);
 
 		const user = await User.findOne({ email });
 
@@ -41,6 +40,7 @@ router.post(
 				id: user.id,
 				email: user.email,
 				name: user.name,
+				isAdmin: user.isAdmin,
 			},
 			String(process.env.SECRET_KEY)
 		);
@@ -50,6 +50,7 @@ router.post(
 				id: user.id,
 				email: user.email,
 				name: user.name,
+				admin: user.isAdmin,
 			},
 			success: true,
 			token: userToken,
