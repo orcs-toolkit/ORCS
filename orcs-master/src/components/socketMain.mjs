@@ -37,7 +37,7 @@ export function socketMain(io, socket, workerId) {
 			socket.join('faculty');
 			logger.info(`Faculty with ID ${socket.id} joined!`);
 			setActiveState(io);
-		} else if (key === 'admin') {
+		} else if (key === process.env.AUTH_SECRET) {
 			socket.join(socket_events.emit.ADMIN);
 			winLogger.log('info', {
 				message: 'disconnected',
@@ -101,9 +101,9 @@ export function socketMain(io, socket, workerId) {
 		io.to(socket_events.emit.ADMIN).emit(socket_events.emit.DATA, data);
 	});
 
-	socket.on(socket_events.listen.UPDATE_BAN_LIST, (data) => {
+	socket.on('updated:Ban', (data) => {
 		logger.info(`Sending ${data} to node-exporter`);
-		socket.broadcast.emit(socket_events.emit.UPDATED_BAN, data);
+		socket.broadcast.emit('updated:Ban', data);
 	});
 
 	socket.on(socket_events.listen.NODE_LOGS, async (dateData) => {

@@ -60,9 +60,10 @@ export function socketMain(socket) {
 	});
 
 	socket.on('updated:Ban', (data) => {
-		if (data.role === global.role) {
-			console.log(data);
+		if (global.role === data.role) {
+			// axios.get(`/api/getPolicyByRole/${data.role}`).then(() => {
+			// 	orcs_monitors(kemfucker);
+			// });
 		}
-		// console.log(data);
 	});
 }

@@ -10,7 +10,7 @@ import { loadingAnim } from './cli/loadingAnim.mjs';
 const app = express();
 app.use(express.json());
 
-global.role = 'Default';
+global.role = 'default';
 
 let socket = io(process.env.SOCKET_URI, {
 	reconnection: true,
