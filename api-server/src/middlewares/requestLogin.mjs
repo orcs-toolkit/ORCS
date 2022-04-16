@@ -14,7 +14,7 @@ export const requestLogin = (req, res, next) => {
 	}
 
 	const payload = jwt.verify(token, String(process.env.SECRET_KEY));
-	if (!payload.admin) {
+	if (!payload.isAdmin) {
 		return res.status(401).send({
 			success: false,
 			message: 'You do not have permission to perform this action',

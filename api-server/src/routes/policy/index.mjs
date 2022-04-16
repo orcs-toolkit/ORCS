@@ -20,6 +20,6 @@ router.use('/setPolicy', requestLogin, setPolicyRouter);
 router.use('/deletePolicy', requestLogin, deletePolicyRouter);
 router.use('/getRolePolicy', roleBasedPolicyRouter);
 router.use('/getRoleWisePolicy', requestLogin, roleWisePolicyRouter);
-router.use('/updateSinglePolicy', updateSinglePolicyRouter);
+router.use('/updateSinglePolicy', requestLogin, updateSinglePolicyRouter);
 
 export { router as policyRouter };
