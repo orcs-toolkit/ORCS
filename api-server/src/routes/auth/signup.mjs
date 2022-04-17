@@ -19,7 +19,7 @@ router.post(
 	],
 	ValidateRequest,
 	async (req, res) => {
-		const { name, email, password, isAdmin } = req.body;
+		const { name, email, password, isAdmin, role } = req.body;
 
 		// Check if user is already registered to the database
 		const emailExist = await User.findOne({ email });
@@ -33,6 +33,7 @@ router.post(
 			email,
 			password,
 			isAdmin,
+			role,
 		});
 
 		const userToken = jwt.sign(
@@ -41,6 +42,7 @@ router.post(
 				email: user.email,
 				name: user.name,
 				admin: user.isAdmin,
+				role: user.role,
 			},
 			String(process.env.SECRET_KEY)
 		);
@@ -53,6 +55,7 @@ router.post(
 					email: savedUser.email,
 					name: savedUser.name,
 					admin: savedUser.isAdmin,
+					role: savedUser.role,
 				},
 				success: true,
 				token: userToken,

@@ -1,6 +1,39 @@
-import { Link } from 'react-router-dom';
+import { useState } from 'react';
+import { Link, useHistory } from 'react-router-dom';
+import axios from 'axios';
 
 export default function Register() {
+	const [name, setName] = useState('');
+	const [email, setEmail] = useState('');
+	const [password, setPassword] = useState('');
+	const [role, setRole] = useState('');
+
+	const history = useHistory();
+
+	async function handleSubmit(e) {
+		e.preventDefault();
+		const payload = {
+			name,
+			email,
+			password,
+			role,
+		};
+		console.log(payload);
+
+		try {
+			const { data } = await axios.post(
+				'http://localhost:4001/auth/register',
+				payload
+			);
+			if (data.success == true) {
+				window.localStorage.setItem('jwt', JSON.stringify(data.token));
+				history.push('/session');
+			}
+		} catch (err) {
+			console.log(err);
+		}
+	}
+
 	return (
 		<section className="vh-100" style={{ backgroundColor: '#eee' }}>
 			<div className="container h-100">
@@ -14,7 +47,7 @@ export default function Register() {
 											Register
 										</p>
 
-										<form className="mx-1 mx-md-4">
+										<form onSubmit={handleSubmit} className="mx-1 mx-md-4">
 											<div className="d-flex flex-row align-items-center mb-4">
 												<i className="fas fa-user fa-lg me-3 fa-fw"></i>
 												<div className="form-outline flex-fill mb-0">
@@ -22,6 +55,8 @@ export default function Register() {
 														type="text"
 														id="form3Example1c"
 														className="form-control"
+														value={name}
+														onChange={(e) => setName(e.target.value)}
 													/>
 													<label
 														className="form-label"
@@ -39,6 +74,8 @@ export default function Register() {
 														type="email"
 														id="form3Example3c"
 														className="form-control"
+														value={email}
+														onChange={(e) => setEmail(e.target.value)}
 													/>
 													<label
 														className="form-label"
@@ -56,6 +93,8 @@ export default function Register() {
 														type="password"
 														id="form3Example4c"
 														className="form-control"
+														value={password}
+														onChange={(e) => setPassword(e.target.value)}
 													/>
 													<label
 														className="form-label"
@@ -66,36 +105,15 @@ export default function Register() {
 												</div>
 											</div>
 
-											<div className="dropdown">
-												<a
-													className="dropdown-toggle"
-													role="button"
-													id="dropdownMenuButton"
-													data-mdb-toggle="dropdown"
-													aria-expanded="false"
+											<div className="form-floating">
+												<select
+													className="form-select"
+													id="roleSelect"
+													onChange={(e) => setRole(e.target.value)}
 												>
-													ROLE
-												</a>
-												<ul
-													className="dropdown-menu"
-													aria-labelledby="dropdownMenuButton"
-												>
-													<li>
-														<a className="dropdown-item" href="#">
-															Student
-														</a>
-													</li>
-													<li>
-														<a className="dropdown-item" href="#">
-															Faculty
-														</a>
-													</li>
-													<li>
-														<a className="dropdown-item" href="#">
-															Guest
-														</a>
-													</li>
-												</ul>
+													<option value="guest">Guest</option>
+												</select>
+												<label for="roleSelect">Select your role</label>
 											</div>
 
 											<div>
@@ -113,7 +131,7 @@ export default function Register() {
 
 												<div className="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
 													<button
-														type="button"
+														type="submit"
 														className="btn btn-primary btn-lg"
 													>
 														Register

@@ -1,6 +1,9 @@
-import express from 'express';
 import dotenv from 'dotenv';
 dotenv.config();
+import express from 'express';
+import helmet from 'helmet';
+import morgan from 'morgan';
+import cors from 'cors';
 
 import io from 'socket.io-client';
 
@@ -9,6 +12,14 @@ import { loadingAnim } from './cli/loadingAnim.mjs';
 
 const app = express();
 app.use(express.json());
+app.use(helmet());
+app.use(morgan('common'));
+app.use(
+	cors({
+		origin: true,
+		credentials: true,
+	})
+);
 
 global.role = 'default';
 
@@ -23,12 +34,14 @@ socketMain(socket);
 
 app.post('/role', async (req, res) => {
 	const { role, name } = req.body;
+	// console.log(`Received: ${role}, ${name}`);
 	global.role = role;
 	global.name = name;
-	console.log(`Role: ${global.role}, Name: ${global.name}`);
-	res.send({
+	// console.log(`Role: ${global.role}, Name: ${global.name}`);
+	res.status(200).send({
 		message: `Role set to: ${global.role}`,
 		user: `Currently logged user: ${global.name}`,
+		success: true,
 	});
 });
 

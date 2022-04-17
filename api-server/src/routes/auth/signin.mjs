@@ -41,6 +41,7 @@ router.post(
 				email: user.email,
 				name: user.name,
 				isAdmin: user.isAdmin,
+				role: user.role,
 			},
 			String(process.env.SECRET_KEY)
 		);
@@ -51,6 +52,7 @@ router.post(
 				email: user.email,
 				name: user.name,
 				admin: user.isAdmin,
+				role: user.role,
 			},
 			success: true,
 			token: userToken,

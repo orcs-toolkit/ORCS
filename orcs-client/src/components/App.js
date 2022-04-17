@@ -3,6 +3,7 @@ import history from '../history';
 import Home from './Home';
 import Login from './Login';
 import Register from './Register';
+import SessionDashboard from './SessionDashboard';
 
 function App() {
 	return (
@@ -12,6 +13,7 @@ function App() {
 					<Route path="/" exact component={Home} />
 					<Route path="/login" component={Login} />
 					<Route path="/register" component={Register} />
+					<Route path="/session" component={SessionDashboard} />
 				</Switch>
 			</HashRouter>
 		</div>

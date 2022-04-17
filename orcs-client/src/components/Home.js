@@ -16,7 +16,7 @@ export default function Home() {
 										</p>
 
 										<Link
-											to="/login"
+											to="/register"
 											className="card text-white bg-secondary p-md-3"
 											style={{ alignItems: 'center' }}
 										>
