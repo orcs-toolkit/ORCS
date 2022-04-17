@@ -22,7 +22,7 @@ export default function Login() {
 				'http://localhost:4001/auth/login',
 				payload
 			);
-			if (data.success == true) {
+			if (data.success === true) {
 				window.localStorage.setItem('jwt', data.token);
 				history.push('/session');
 			}
@@ -113,7 +113,9 @@ export default function Login() {
 										</form>
 									</div>
 									<div className="col-md-10 col-lg-6 col-xl-7 d-flex align-items-center order-1 order-lg-2">
-										<img
+										<input
+											type="image"
+											img
 											src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-registration/draw1.webp"
 											className="img-fluid"
 											alt="Sample image"
