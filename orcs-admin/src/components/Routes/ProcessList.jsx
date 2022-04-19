@@ -1,5 +1,5 @@
 import moment from "moment";
-import axios from "axios";
+import api from "../../utils/api";
 import { useLocation } from "react-router-dom";
 import React, { useState, useEffect, Fragment } from "react";
 import StyledTable from "../utilities/Table";
@@ -38,8 +38,8 @@ const ProcessList = ({ socket }) => {
   const addSingleProcess = (role, processName) => {
     if (role !== "") {
       setLoading(true);
-      axios
-        .post(`http://localhost:4001/api/updateSinglePolicy`, {
+      api
+        .post(`http://localhost:4001/policy/updateSinglePolicy`, {
           role,
           processName,
         })

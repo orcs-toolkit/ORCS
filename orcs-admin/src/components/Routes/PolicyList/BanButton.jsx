@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Button } from "react-bootstrap";
 
-import BanListModal from "./BanListModal";
+import BanListModal from "./BanModal";
 
 const BanlistButton = ({ edit = false, role = "", banList = [], onReload }) => {
   const [visible, setvisible] = useState(false);
@@ -15,16 +15,18 @@ const BanlistButton = ({ edit = false, role = "", banList = [], onReload }) => {
         className="bg-transparent text-primary py-2"
         onClick={() => toggle()}
       >
-        {edit ? "Edit Policy" : "Add Policy"}
+        {edit ? <i className={`bx bx-edit fs-20`}></i> : "Add Policy"}
       </Button>
-      <BanListModal
-        onReload={onReload}
-        visible={visible}
-        toggle={toggle}
-        edit={edit}
-        propBanList={banList}
-        propRole={role}
-      />
+      {visible && (
+        <BanListModal
+          onReload={onReload}
+          visible={visible}
+          toggle={toggle}
+          edit={edit}
+          propBanList={banList}
+          propRole={role}
+        />
+      )}
     </>
   );
 };

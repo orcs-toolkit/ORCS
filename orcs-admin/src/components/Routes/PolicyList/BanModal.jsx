@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import axios from "axios";
+import api from "../../../utils/api";
 import { Button, Modal, Form } from "react-bootstrap";
 import AsyncSelect from "react-select/async";
 
@@ -24,9 +24,9 @@ const BanListModal = ({
   const handleSubmit = () => {
     if (role !== "") {
       setError(false);
-      axios
+      api
         .post(
-          `http://localhost:4001/api/${edit ? "updatePolicy" : "setPolicy"}`,
+          `http://localhost:4001/policy/${edit ? "updatePolicy" : "setPolicy"}`,
           {
             role,
             banList: banList.map((b) => b.value),
@@ -38,6 +38,7 @@ const BanListModal = ({
           toggle();
         })
         .catch((err) => {
+          setError(true);
           console.log(err);
         });
     } else {

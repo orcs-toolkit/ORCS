@@ -1,5 +1,5 @@
 import React, { useState, useEffect, Fragment } from "react";
-import axios from "axios";
+import api from "../../../utils/api";
 import {
   Card,
   ListGroup,
@@ -7,10 +7,9 @@ import {
   Row,
   Container,
   Col,
-  Button,
 } from "react-bootstrap";
 import FullScreenLoader from "../../utilities/Spinner";
-import BanlistButton from "./BanlistButton";
+import BanlistButton from "./BanButton";
 
 const BanList = () => {
   const [data, setdata] = useState([]);
@@ -18,8 +17,8 @@ const BanList = () => {
 
   const fetchData = () => {
     setloading(true);
-    axios
-      .get("http://localhost:4001/api/getRoleWisePolicy")
+    api
+      .get("http://localhost:4001/policy/getRoleWisePolicy")
       .then((res) => {
         setdata(res.data);
         setloading(false);
@@ -40,7 +39,7 @@ const BanList = () => {
     <Fragment>
       <Container fluid className="main-content-container px-4">
         <Row>
-          <Col lg={6}>
+          <Col lg={12}>
             <div
               className="d-flex text-center py-2 my-2"
               style={{ justifyContent: "space-between" }}
@@ -49,14 +48,13 @@ const BanList = () => {
               <BanlistButton onReload={fetchData} />
             </div>
           </Col>
-          <Col lg={6}></Col>
-          <Col lg={6}>
+          <Col lg={12}>
             <Row>
               {data.map((d) => (
-                <Col lg={6}>
+                <Col lg={3}>
                   <Card className="border border-primary rounded card shadow_1">
                     <Card.Title className="m-4 d-flex justify-content-between">
-                      {d._id}
+                      <h4 className="py-2 text-primary">{d._id}</h4>
                       <BanlistButton
                         edit={true}
                         role={d._id}
@@ -68,20 +66,25 @@ const BanList = () => {
                       className="list-group-flush overflow-auto"
                       style={{ maxHeight: 200 }}
                     >
-                      {d.list[0].map((p, i) => {
-                        return (
-                          <ListGroupItem>
-                            <h5>{p}</h5>
-                          </ListGroupItem>
-                        );
-                      })}
+                      {d.list[0].length === 0 ? (
+                        <h4 className="p-3 text-center font-w100">
+                          No Process Defined
+                        </h4>
+                      ) : (
+                        d.list[0].map((p, i) => {
+                          return (
+                            <ListGroupItem>
+                              <h4>Process Name: {p}</h4>
+                            </ListGroupItem>
+                          );
+                        })
+                      )}
                     </ListGroup>
                   </Card>
                 </Col>
               ))}
             </Row>
           </Col>
-          <Col lg={6}></Col>
         </Row>
       </Container>
     </Fragment>

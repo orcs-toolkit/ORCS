@@ -7,6 +7,7 @@ import Header from "./Header";
 import Dashboard from "./Routes/Dashboard";
 import MachineDetails from "./Routes/MachineDetails";
 import BanList from "./Routes/PolicyList";
+import UserList from "./Routes/UserList";
 import Login from "./Routes/Login";
 import PrivateRoute from "./PrivateRoute";
 import io from "socket.io-client";
@@ -42,6 +43,9 @@ const App = () => {
               </PrivateRoute>
               <PrivateRoute exact path="/banList">
                 <BanList />
+              </PrivateRoute>
+              <PrivateRoute exact path="/userList">
+                <UserList />
               </PrivateRoute>
               <PrivateRoute exact path="/">
                 <Dashboard socket={socket} />

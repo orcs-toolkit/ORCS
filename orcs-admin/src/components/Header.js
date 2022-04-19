@@ -30,6 +30,9 @@ export default () => {
         <ul className="navbar-nav">
           {authenticated && (
             <>
+              <Link to="/userList">
+                <li className="nav-item nav-link">User List</li>
+              </Link>
               <Link to="/banList">
                 <li className="nav-item nav-link">Policies List</li>
               </Link>
