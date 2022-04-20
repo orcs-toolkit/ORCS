@@ -6,6 +6,7 @@ import axios from 'axios';
 export default function SessionDashboard() {
 	const [user, setUser] = useState({});
 	const [sessionStarted, setSession] = useState('');
+	const [error, setError] = useState('');
 	const history = useHistory();
 
 	useEffect(() => {
@@ -44,12 +45,15 @@ export default function SessionDashboard() {
 			});
 			// console.log(typeof data.success);
 			if (!data.success) {
-				setSession('Something went wrong, please try again');
+				setError('Something went wrong, please try again');
 			}
 
 			setSession('Session started!');
+			setError('');
 		} catch (err) {
 			console.log('Unable to POST payload', err);
+			setError('Something went wrong, please try again');
+			setSession('');
 		}
 	}
 
@@ -140,6 +144,11 @@ export default function SessionDashboard() {
 										{sessionStarted && (
 											<div className="alert alert-success" role="alert">
 												{sessionStarted}
+											</div>
+										)}
+										{error && (
+											<div className="alert alert-danger" role="alert">
+												{error}
 											</div>
 										)}
 									</div>
