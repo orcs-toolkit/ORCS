@@ -64,14 +64,18 @@ export default function SessionDashboard() {
 		};
 
 		try {
-			const { data } = await axios.post('http://localhost:3001/role', payload, {
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json',
-					'Allow-Origin-With-Credentials': '*',
-					'Access-Control-Allow-Origin': '*',
-				},
-			});
+			const { data } = await axios.post(
+				'http://localhost:3001/logout',
+				payload,
+				{
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/json',
+						'Allow-Origin-With-Credentials': '*',
+						'Access-Control-Allow-Origin': '*',
+					},
+				}
+			);
 			// console.log(typeof data.success);
 			if (!data.success) {
 				setSession('Something went wrong, please try again');

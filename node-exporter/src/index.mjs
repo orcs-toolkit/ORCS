@@ -47,8 +47,12 @@ app.post('/role', async (req, res) => {
 
 app.post('/logout', (req, res) => {
 	global.role = 'default';
+	global.name = '';
 	console.log(global.role);
-	res.send({ message: `Role set to: ${global.role}` });
+	res.send({
+		message: `Role set to: ${global.role}`,
+		success: true,
+	});
 });
 
 const PORT = 3001;
