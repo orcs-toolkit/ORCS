@@ -60,7 +60,12 @@ export function socketMain(socket) {
 	});
 
 	socket.on('updated:Ban', (data) => {
+		console.log('From Admin', data);
 		if (global.role === data.role) {
+			// {
+			// 	role: '' // default, student, faculty, admin,
+			// 	status: // updated, deleted, created
+			// }
 			// axios.get(`/api/getPolicyByRole/${data.role}`).then(() => {
 			// 	orcs_monitors(kemfucker);
 			// });

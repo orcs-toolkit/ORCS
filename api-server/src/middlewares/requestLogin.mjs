@@ -4,7 +4,7 @@ export const requestLogin = (req, res, next) => {
 	var header = req.headers.authorization || '';
 	var token = header.split(/\s+/).pop() || '';
 
-	console.log(`Token: ${token}`);
+	// console.log(`Token: ${token}`);
 
 	if (!header && !token) {
 		return res.status(401).send({

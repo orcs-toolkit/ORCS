@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { Icon01, Icon02 } from "../../assets/images/SearchJobsIcon";
 
 const SingleMachine = (props) => {
-  const { userName, role, runningProcesses, macA, isActive } =
+  const { name, role, runningProcesses, macA, isActive } =
     props.MachineData;
   const { key } = props;
   let icon = "";
@@ -20,7 +20,7 @@ const SingleMachine = (props) => {
             <div className="media-body">
               <p className="mb-1 text-primary">Role: {role}</p>
               <h4 className="fs-20 text-primary">
-                UserName: {userName || "NA"}
+                Username: {name || "NA"}
               </h4>
             </div>
             {icon}

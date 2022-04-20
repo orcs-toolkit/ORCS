@@ -3,7 +3,7 @@ import { Button } from "react-bootstrap";
 
 import BanListModal from "./BanModal";
 
-const BanlistButton = ({ edit = false, role = "", banList = [], onReload }) => {
+const BanlistButton = ({ edit = false, role = "", banList = [], onReload, socket }) => {
   const [visible, setvisible] = useState(false);
   const toggle = () => {
     setvisible(!visible);
@@ -25,6 +25,7 @@ const BanlistButton = ({ edit = false, role = "", banList = [], onReload }) => {
           edit={edit}
           propBanList={banList}
           propRole={role}
+          socket={socket}
         />
       )}
     </>

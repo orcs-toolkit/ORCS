@@ -57,6 +57,31 @@ export default function SessionDashboard() {
 		e.preventDefault();
 
 		localStorage.removeItem('jwt');
+
+		const payload = {
+			name: '',
+			role: 'default',
+		};
+
+		try {
+			const { data } = await axios.post('http://localhost:3001/role', payload, {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+					'Allow-Origin-With-Credentials': '*',
+					'Access-Control-Allow-Origin': '*',
+				},
+			});
+			// console.log(typeof data.success);
+			if (!data.success) {
+				setSession('Something went wrong, please try again');
+			}
+
+			setSession('');
+		} catch (err) {
+			console.log('Unable to POST payload', err);
+		}
+
 		history.push('/');
 	}
 

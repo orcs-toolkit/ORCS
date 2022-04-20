@@ -65,7 +65,7 @@ const MachineDetails = ({ socket }) => {
                     <div className="col-6">
                       <div className="profile-image my-2">{defaultIcon}</div>
                       <h3 className="text-black ml-3 mb-1">
-                        UserName: {machineData.userName || "NA"}
+                        UserName: {machineData.name || "NA"}
                       </h3>
                       <h4 className="ml-3 py-1">MacA: {machineData.macA}</h4>
                       <h4 className="ml-3">Type: {machineData.role}</h4>

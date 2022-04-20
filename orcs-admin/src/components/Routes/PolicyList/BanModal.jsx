@@ -10,6 +10,7 @@ const BanListModal = ({
   propRole,
   onReload,
   propBanList,
+  socket
 }) => {
   const [role, setRole] = useState(propRole);
   const [error, setError] = useState(false);
@@ -34,6 +35,11 @@ const BanListModal = ({
         )
         .then((res) => {
           onReload && onReload();
+          console.log(socket)
+          socket.emit('updated:Ban', {
+            role, // default, student, faculty, admin
+            status: edit ? 'updated' : 'created' // updated, deleted, created
+          })
           console.log("Success", res);
           toggle();
         })

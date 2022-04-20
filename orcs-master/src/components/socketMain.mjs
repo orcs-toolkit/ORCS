@@ -28,16 +28,7 @@ export function socketMain(io, socket, workerId) {
 	// console.log('Socket Session: ', socket.request.session);
 
 	socket.on('clientAuth', async (key) => {
-		if (key === 'student') {
-			// valid UI client joined
-			socket.join('student');
-			logger.info(`Student with ID ${socket.id} joined!`);
-			setActiveState(io);
-		} else if (key === 'faculty') {
-			socket.join('faculty');
-			logger.info(`Faculty with ID ${socket.id} joined!`);
-			setActiveState(io);
-		} else if (key === process.env.AUTH_SECRET) {
+		if (key === process.env.AUTH_SECRET) {
 			socket.join(socket_events.emit.ADMIN);
 			winLogger.log('info', {
 				message: 'disconnected',

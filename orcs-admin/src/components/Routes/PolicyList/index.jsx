@@ -11,7 +11,7 @@ import {
 import FullScreenLoader from "../../utilities/Spinner";
 import BanlistButton from "./BanButton";
 
-const BanList = () => {
+const BanList = ({ socket }) => {
   const [data, setdata] = useState([]);
   const [loading, setloading] = useState(false);
 
@@ -45,7 +45,7 @@ const BanList = () => {
               style={{ justifyContent: "space-between" }}
             >
               <h4 className="fs-22 font-w600">Defined Policies</h4>
-              <BanlistButton onReload={fetchData} />
+              <BanlistButton socket={socket} onReload={fetchData} />
             </div>
           </Col>
           <Col lg={12}>
@@ -60,6 +60,7 @@ const BanList = () => {
                         role={d._id}
                         onReload={fetchData}
                         banList={d.list[0]}
+                        socket={socket}
                       />
                     </Card.Title>
                     <ListGroup
