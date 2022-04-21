@@ -7,6 +7,7 @@ import {
   Row,
   Container,
   Col,
+  Button,
 } from "react-bootstrap";
 import FullScreenLoader from "../../utilities/Spinner";
 import BanlistButton from "./BanButton";
@@ -22,6 +23,19 @@ const BanList = ({ socket }) => {
       .then((res) => {
         setdata(res.data);
         setloading(false);
+      })
+      .catch((err) => {
+        console.log(err);
+        setloading(false);
+      });
+  };
+
+  const deletePolicy = (id) => {
+    setloading(true);
+    axios
+      .post("http://localhost:4001/policy/deletePolicy/" + id)
+      .then((res) => {
+        fetchData();
       })
       .catch((err) => {
         console.log(err);
@@ -62,6 +76,12 @@ const BanList = ({ socket }) => {
                         banList={d.list[0]}
                         socket={socket}
                       />
+                      <Button
+                        className="bg-transparent text-danger mx-2 p-2"
+                        onClick={() => deletePolicy(d.id)}
+                      >
+                        <i className={`bx bx-delete fs-20`}></i>
+                      </Button>
                     </Card.Title>
                     <ListGroup
                       className="list-group-flush overflow-auto"
