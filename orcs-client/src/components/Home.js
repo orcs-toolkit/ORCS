@@ -1,7 +1,47 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import axios from 'axios';
 
 export default function Home() {
+	const [user, setUser] = useState({});
+	const [policy, setPolicy] = useState([]);
+	const [showList, setShowList] = useState(false);
+
+	useEffect(() => {
+		(async () => {
+			const { data } = await axios.get('http://localhost:4002/currentuser');
+			setUser(data.user);
+		})();
+	}, []);
+
+	async function fetchPolicy(e) {
+		e.preventDefault();
+
+		const { data } = await axios.get(
+			`http://localhost:4001/policy/getRolePolicy/${user.role}`
+		);
+
+		setPolicy(data.policy);
+	}
+
+	function getPolicyList() {
+		if (policy.length === 0) {
+			return;
+		}
+
+		if (policy.banList.length === 0) {
+			return <p className="list-group-item h5">No policies set</p>;
+		}
+
+		return policy.banList.map((i) => {
+			return (
+				<li key={i} className="list-group-item">
+					{i}
+				</li>
+			);
+		});
+	}
+
 	return (
 		<section className="vh-100" style={{ backgroundColor: '#eee' }}>
 			<div className="container h-100">
@@ -33,14 +73,58 @@ export default function Home() {
 											<h1>Login</h1>
 										</Link>
 									</div>
+
 									<div className="col-md-10 col-lg-6 col-xl-7 d-flex align-items-center order-1 order-lg-2">
 										<input
 											type="image"
-											img
 											src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-registration/draw1.webp"
 											className="img-fluid"
 											alt="Sample image"
 										/>
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<br />
+
+						<div className="row">
+							<div className="col">
+								<div className="card">
+									<div className="card-body">
+										<p>
+											<span className="h4">
+												Your current role is: {user.role}
+											</span>
+											<br />
+											Click here to know what you cannot use
+										</p>
+
+										<button
+											onClick={(e) => {
+												fetchPolicy(e);
+												setShowList(true);
+											}}
+											type="submit"
+											className="btn btn-secondary btn-lg"
+										>
+											Fetch Policy
+										</button>
+										{showList && (
+											<div className="card-text">
+												<ul
+													className="list-group list-group-flush list-group-numbered"
+													style={{
+														maxHeight: '200px',
+														marginBottom: '10px',
+														overflowY: 'scroll',
+														WebkitOverflowScrolling: 'touch',
+													}}
+												>
+													{getPolicyList()}
+												</ul>
+											</div>
+										)}
 									</div>
 								</div>
 							</div>

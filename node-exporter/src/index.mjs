@@ -21,6 +21,7 @@ app.use(
 	})
 );
 
+global.name = 'NA';
 global.role = 'default';
 
 let socket = io(process.env.SOCKET_URI, {
@@ -45,9 +46,19 @@ app.post('/role', async (req, res) => {
 	});
 });
 
+app.get('/currentuser', (req, res) => {
+	res.status(200).send({
+		success: true,
+		user: {
+			name: global.name,
+			role: global.role,
+		},
+	});
+});
+
 app.post('/logout', (req, res) => {
 	global.role = 'default';
-	global.name = '';
+	global.name = 'NA';
 	console.log(global.role);
 	res.send({
 		message: `Role set to: ${global.role}`,
@@ -55,7 +66,7 @@ app.post('/logout', (req, res) => {
 	});
 });
 
-const PORT = 3001;
+const PORT = 4002;
 
 app.listen(PORT, () => {
 	console.log(`express server running on port: ${PORT}`);

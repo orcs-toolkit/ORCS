@@ -77,20 +77,6 @@ export default function Login() {
 												</div>
 											</div>
 
-											{/* <div className="form-floating">
-												<select
-													className="form-select"
-													id="roleSelect"
-													onChange={(e) => setRole(e.target.value)}
-												>
-													<option>Choose your role</option>
-													<option value="faculty">Faculty</option>
-													<option value="student">Student</option>
-													<option value="guest">Guest</option>
-												</select>
-												<label for="roleSelect">Select your role</label>
-											</div> */}
-
 											{errorMessage && (
 												<div className="alert alert-danger" role="alert">
 													{errorMessage}
@@ -115,7 +101,6 @@ export default function Login() {
 									<div className="col-md-10 col-lg-6 col-xl-7 d-flex align-items-center order-1 order-lg-2">
 										<input
 											type="image"
-											img
 											src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-registration/draw1.webp"
 											className="img-fluid"
 											alt="Sample image"

@@ -25,7 +25,7 @@ function createWindow() {
 	});
 
 	splashWindow.loadFile('app/splash.html');
-	mainWindow.loadURL('http://localhost:3000');
+	mainWindow.loadURL('http://localhost:3001');
 
 	splashWindow.webContents.on('did-finish-load', () => {
 		splashWindow.show();

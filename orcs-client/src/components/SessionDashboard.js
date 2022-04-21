@@ -5,6 +5,8 @@ import axios from 'axios';
 
 export default function SessionDashboard() {
 	const [user, setUser] = useState({});
+	const [policy, setPolicy] = useState([]);
+	const [showList, setShowList] = useState(false);
 	const [sessionStarted, setSession] = useState('');
 	const [error, setError] = useState('');
 	const history = useHistory();
@@ -35,7 +37,7 @@ export default function SessionDashboard() {
 		};
 
 		try {
-			const { data } = await axios.post('http://localhost:3001/role', payload, {
+			const { data } = await axios.post('http://localhost:4002/role', payload, {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json',
@@ -69,7 +71,7 @@ export default function SessionDashboard() {
 
 		try {
 			const { data } = await axios.post(
-				'http://localhost:3001/logout',
+				'http://localhost:4002/logout',
 				payload,
 				{
 					method: 'POST',
@@ -91,6 +93,31 @@ export default function SessionDashboard() {
 		}
 
 		history.push('/');
+	}
+
+	async function fetchPolicy(e) {
+		e.preventDefault();
+
+		const { data } = await axios.get(
+			`http://localhost:4001/policy/getRolePolicy/${user.role}`
+		);
+		if (!data.policy) {
+			return;
+		}
+		setPolicy(data.policy);
+	}
+
+	function getPolicyList() {
+		console.log('Policy', policy);
+		if (policy.length === 0) {
+			return;
+		}
+		if (policy.banList.length === 0) {
+			return <p className="list-group-item h5">No policies set</p>;
+		}
+		return policy.banList.map((i) => {
+			return <li className="list-group-item">{i}</li>;
+		});
 	}
 
 	return (
@@ -123,23 +150,68 @@ export default function SessionDashboard() {
 											<Link to="/login">Login again!</Link>
 										</div>
 
-										<form onSubmit={handleSession} className="mx-1 mx-md-4">
-											<div className="d-flex mb-lg-4">
+										<div className="row">
+											<div className="col-sm-6">
+												<form onSubmit={handleSession} className="mx-1 mx-md-4">
+													<div className="d-flex mb-lg-4">
+														<button
+															type="submit"
+															className="btn btn-primary btn-lg"
+														>
+															Start your session!
+														</button>
+													</div>
+												</form>
+											</div>
+
+											<div className="col-sm-6">
+												<form onSubmit={handleLogout} className="mx-1 mx-md-4">
+													<div className="d-flex mb-lg-4">
+														<button
+															type="submit"
+															className="btn btn-danger btn-lg"
+														>
+															Logout
+														</button>
+													</div>
+												</form>
+											</div>
+										</div>
+
+										<div className="row">
+											<div className="col">
+												<h4>Click here to know what you cannot use</h4>
+
 												<button
+													onClick={(e) => {
+														fetchPolicy(e);
+														setShowList(true);
+													}}
 													type="submit"
-													className="btn btn-primary btn-lg"
+													className="btn btn-secondary btn-lg"
 												>
-													Start your session!
+													Fetch Policy
 												</button>
+
+												{showList && (
+													<div className="card-text">
+														<ul
+															className="list-group list-group-flush list-group-numbered"
+															style={{
+																maxHeight: '200px',
+																marginBottom: '10px',
+																overflowY: 'scroll',
+																WebkitOverflowScrolling: 'touch',
+															}}
+														>
+															{getPolicyList()}
+														</ul>
+													</div>
+												)}
 											</div>
-										</form>
-										<form onSubmit={handleLogout} className="mx-1 mx-md-4">
-											<div className="d-flex mb-lg-4">
-												<button type="submit" className="btn btn-danger btn-lg">
-													Logout
-												</button>
-											</div>
-										</form>
+										</div>
+
+										<br />
 
 										{sessionStarted && (
 											<div className="alert alert-success" role="alert">
@@ -155,7 +227,6 @@ export default function SessionDashboard() {
 									<div className="col-md-10 col-lg-6 col-xl-7 d-flex align-items-center order-1 order-lg-2">
 										<input
 											type="image"
-											img
 											src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-registration/draw1.webp"
 											className="img-fluid"
 											alt="Sample image"

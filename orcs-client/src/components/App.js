@@ -1,5 +1,4 @@
 import { Route, Switch, HashRouter } from 'react-router-dom';
-import history from '../history';
 import Home from './Home';
 import Login from './Login';
 import Register from './Register';
@@ -8,7 +7,7 @@ import SessionDashboard from './SessionDashboard';
 function App() {
 	return (
 		<div>
-			<HashRouter history={history}>
+			<HashRouter>
 				<Switch>
 					<Route path="/" exact component={Home} />
 					<Route path="/login" component={Login} />
