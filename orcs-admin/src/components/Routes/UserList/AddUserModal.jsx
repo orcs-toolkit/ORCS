@@ -15,32 +15,33 @@ const AddUserModal = ({ visible, toggle, edit, propUser, onReload }) => {
 
   const handleSubmit = () => {
     setLoading(true);
-    edit
-      ? api.post(`http://localhost:4001/user/updateUser/${user.id}`, {
-          ...user,
-        })
-      : api
-          .post(`http://localhost:4001/auth/register`, {
-            ...user,
-            isAdmin: user.role === "Admin",
-          })
-          .then((res) => {
-            onReload && onReload();
-            setLoading(false);
-            console.log("Success", res);
-            toggle();
-          })
-          .catch((err) => {
-            setError(true);
-            setLoading(false);
-            setErrMsg(
-              <ul>
-                {err.response.data.errors.map((e) => (
-                  <li>- {e.message}</li>
-                ))}
-              </ul>
-            );
-          });
+    let request = api.post(`http://localhost:4001/auth/register`, {
+      ...user,
+      isAdmin: user.role === "Admin",
+    });
+    if (edit) {
+      request = api.post(`http://localhost:4001/user/updateUser/${user.id}`, {
+        ...user,
+      });
+    }
+    request
+      .then((res) => {
+        onReload && onReload();
+        setLoading(false);
+        console.log("Success", res);
+        toggle();
+      })
+      .catch((err) => {
+        setError(true);
+        setLoading(false);
+        setErrMsg(
+          <ul>
+            {err.response.data.errors.map((e) => (
+              <li>- {e.message}</li>
+            ))}
+          </ul>
+        );
+      });
   };
 
   const fetchRoles = () => {

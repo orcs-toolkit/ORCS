@@ -5,29 +5,19 @@ import SingleMachine from "../utilities/SingleMachineCard";
 import FullScreenLoader from "../utilities/Spinner";
 
 const Dashboard = ({ socket }) => {
-  const [visible, setvisible] = useState(false);
   const [machineList, setMachineList] = useState({});
 
   useEffect(() => {
     const updateListListener = (data) => {
-     
       var tempMacA = Object.keys(data)[0];
       if (data[tempMacA].hasOwnProperty("processData")) {
-        // setMachineList({ ...machineList, [tempMacA]: data[tempMacA] });
-        setMachineList(prevState => {
-          return {...prevState, [tempMacA]: data[tempMacA]};
+        setMachineList((prevState) => {
+          return { ...prevState, [tempMacA]: data[tempMacA] };
         });
       }
-      // console.log('DEBUG SOCKET:', machineList, data)
     };
-      socket.on("data", updateListListener);
-      
-      
+    socket.on("data", updateListListener);
   }, [socket]);
-
-  const toggle = () => {
-    setvisible(!visible);
-  };
 
   return (
     <>
