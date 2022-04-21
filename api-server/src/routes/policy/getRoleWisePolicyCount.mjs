@@ -5,8 +5,16 @@ const router = express.Router();
 
 router.get("/", async(req, res) => {
     try {
-        const data = await Policy.aggregate([
-            { $group: { _id: "$role", list: { $push: "$banList" } } },
+        const data = await Policy.aggregate([{
+                $group: {
+                    _id: {
+                        policyId: "$_id",
+                        role: "$role",
+                    },
+                    list: { $push: "$banList" },
+                },
+            },
+            { $project: { policyid: "$_id.policyId", _id: "$_id.role", list: 1 } },
         ]);
         res.status(200).send(data);
     } catch (err) {

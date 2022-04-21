@@ -18,10 +18,7 @@ const App = () => {
 
 	useEffect(() => {
 		let newSocket = io.connect('http://localhost:4000');
-		newSocket.emit(
-			'clientAuth',
-			'eyJpZCI6IjYyNTg0NGExODY4NjVlMzNkMzVhZGE2NiIsImVtYWlsIjoiY2h1eGlAb3Jjcy5jb20iLCJuYW1lIj'
-		);
+		newSocket.emit('clientAuth', process.env.REACT_APP_AUTH_SECRET);
 		console.log('Newsocket', newSocket);
 		setSocket(newSocket);
 	}, []);

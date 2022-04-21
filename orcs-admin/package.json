@@ -14,6 +14,7 @@
         "chart.js": "^3.7.1",
         "concurrently": "^7.0.0",
         "cross-env": "^7.0.3",
+        "dotenv": "^16.0.0",
         "electron": "^16.0.6",
         "final-form": "^4.20.6",
         "flaticon": "^0.1.0",

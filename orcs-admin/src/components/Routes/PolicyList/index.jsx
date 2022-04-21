@@ -77,10 +77,10 @@ const BanList = ({ socket }) => {
                         socket={socket}
                       />
                       <Button
-                        className="bg-transparent text-danger mx-2 p-2"
-                        onClick={() => deletePolicy(d.id)}
+                        className="bg-transparent text-danger"
+                        onClick={() => deletePolicy(d.policyid)}
                       >
-                        <i className={`bx bx-delete fs-20`}></i>
+                        <i className={`bx bx-trash fs-20`}></i>
                       </Button>
                     </Card.Title>
                     <ListGroup
