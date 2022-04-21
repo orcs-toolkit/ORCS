@@ -21,16 +21,20 @@ export default function Home() {
 			`http://localhost:4001/policy/getRolePolicy/${user.role}`
 		);
 
+		if (!data.policy) {
+			return;
+		}
+
 		setPolicy(data.policy);
 		console.log(policy);
 	}
 
 	function getPolicyList() {
-		if (policy.length === 0) {
-			return;
-		}
-
-		if (policy.banList.length === 0) {
+		if (
+			policy === undefined ||
+			policy.length === 0 ||
+			policy.banList.length === 0
+		) {
 			return <p className="list-group-item h5">No policies set</p>;
 		}
 

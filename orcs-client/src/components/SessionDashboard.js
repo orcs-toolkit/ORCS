@@ -105,15 +105,16 @@ export default function SessionDashboard() {
 			return;
 		}
 		setPolicy(data.policy);
-		console.log(policy);
+		console.log('Policy', policy);
+		console.log('User', user);
 	}
 
 	function getPolicyList() {
-		console.log('Policy', policy);
-		if (policy.length === 0) {
-			return;
-		}
-		if (policy.banList.length === 0) {
+		if (
+			policy === undefined ||
+			policy.length === 0 ||
+			policy.banList.length === 0
+		) {
 			return <p className="list-group-item h5">No policies set</p>;
 		}
 		return policy.banList.map((i) => {
