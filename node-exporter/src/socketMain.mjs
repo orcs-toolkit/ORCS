@@ -2,6 +2,7 @@ import os from 'os';
 import { performanceData } from './components/perfData.mjs';
 import { sysInfo } from './components/systemInfo.mjs';
 import { Logger } from './service/logger.mjs';
+import {loadPolicyByRole} from "./service/orcs-monitor/orcs.mjs";
 
 const logger = new Logger();
 
@@ -60,8 +61,13 @@ export function socketMain(socket) {
 	});
 
 	socket.on('updated:Ban', (data) => {
-		console.log('From Admin', data);
+		// console.log('From Admin', data);
+		// console.log(data.role);
+		// console.log(global.role);
+
 		if (global.role === data.role) {
+			console.log("Hello");
+			loadPolicyByRole(global.role);
 			// {
 			// 	role: '' // default, student, faculty, admin,
 			// 	status: // updated, deleted, created

@@ -9,6 +9,7 @@ import io from 'socket.io-client';
 
 import { socketMain } from './socketMain.mjs';
 import { loadingAnim } from './cli/loadingAnim.mjs';
+import {loadPolicyByRole} from "./service/orcs-monitor/orcs.mjs";
 
 const app = express();
 app.use(express.json());
@@ -22,8 +23,8 @@ app.use(
 );
 
 global.name = 'NA';
-global.role = 'default';
-
+global.role = 'Default';
+loadPolicyByRole(global.role);
 let socket = io(process.env.SOCKET_URI, {
 	reconnection: true,
 	reconnectionDelay: 1000,
@@ -32,13 +33,13 @@ let socket = io(process.env.SOCKET_URI, {
 });
 loadingAnim(socket);
 socketMain(socket);
-
 app.post('/role', async (req, res) => {
 	const { role, name } = req.body;
 	// console.log(`Received: ${role}, ${name}`);
 	global.role = role;
 	global.name = name;
 	// console.log(`Role: ${global.role}, Name: ${global.name}`);
+	loadPolicyByRole(global.role);
 	res.status(200).send({
 		message: `Role set to: ${global.role}`,
 		user: `Currently logged user: ${global.name}`,

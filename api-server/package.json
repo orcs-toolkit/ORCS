@@ -13,6 +13,7 @@
   "license": "ISC",
   "dependencies": {
     "@ssktickets/common": "^1.0.10",
+    "axios": "^0.26.1",
     "chalk": "^5.0.0",
     "connect-redis": "^6.1.1",
     "cors": "^2.8.5",

@@ -1,10 +1,9 @@
-import LinuxMonitorService from "./src/Services/windowsService";
-import WindowsMonitorService from "./src/Services/windowsService";
-import MacMonitorService from "./src/Services/windowsService";
+import WindowsMonitorService from "./services/WindowsService.js";
+import LinuxMonitorService from "./services/LinuxService.js";
+import MacMonitorService from "./services/MacService.js";
 import { Spinner } from "cli-spinner";
 import process from "process";
-
-class OrcsMonitor {
+export default class OrcsMonitor {
   osType = { win32: "WINDOWS", linux: "LINUX", darwin: "MAC" };
   constructor(banList, intervalTimeInMiliSeconds) {
     this.detectOS();
@@ -15,8 +14,8 @@ class OrcsMonitor {
   }
   createPlaformInstance(banList, intervalTimeInMiliSeconds) {
     const spinner = new Spinner("ORCS MONITORING DAEMON %s");
-    spinner.setSpinnerString(20);
-    spinner.start();
+    // spinner.setSpinnerString(20);
+    // spinner.start();
     switch (this.os) {
       case "WINDOWS":
         this.platformService = new WindowsMonitorService(
@@ -42,10 +41,7 @@ class OrcsMonitor {
   updateBanList(banList) {
     this.platformService.updateBanList(banList);
   }
-  updateRoutineIntervalTime() {
-    this.platformService.updateRoutineIntervalTime(
-      time,
-      intervalTimeInMiliSeconds
-    );
+  updateRoutineIntervalTime(time) {
+    this.platformService.updateRoutineIntervalTime(time);
   }
 }

@@ -1,5 +1,6 @@
 import find from "find-process";
 import ps from "ps-node";
+import notifier from 'node-notifier';
 export default class LinuxMonitorService {
   constructor(banList, intervalTimeInMiliSeconds) {
     this.banList = banList;
@@ -7,8 +8,12 @@ export default class LinuxMonitorService {
     this.routine();
   }
   async pskill(processName) {
-    find("name", processName, true).then(function (list) {
+    find("name", processName.toLowerCase(), true).then(function (list) {
       list.forEach(async (process) => {
+        notifier.notify({
+          title: 'Warning !',
+          message: process.name + ' is a restricted program please do not use! Program will be terminated'
+        });
         ps.kill(process.pid), function( err ) {
           if (err) {
               throw new Error( err );
