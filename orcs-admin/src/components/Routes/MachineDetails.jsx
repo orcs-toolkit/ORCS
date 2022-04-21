@@ -1,8 +1,7 @@
 import React, { useState, useEffect, Fragment } from "react";
 import { useLocation } from "react-router-dom";
 import { Spinner } from "react-bootstrap";
-import Circular2 from "../charts/circular2";
-import DualLine from "../charts/dualLine";
+import MemoryGraph from "../charts/MemoryGraph";
 import ProcessList from "./ProcessList";
 import {
   Icon01,
@@ -101,7 +100,7 @@ const MachineDetails = ({ socket }) => {
               <div className="card">
                 <div className="card-header align-items-center flex-wrap border-0 pb-0"></div>
                 <div className="card-body pt-0">
-                  <DualLine />
+                  <MemoryGraph socket={socket} />
                   <h4 className="fs-20 text-center text-black mb-4 mr-3">
                     Resource Utilization
                   </h4>
