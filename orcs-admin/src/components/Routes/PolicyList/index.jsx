@@ -32,7 +32,7 @@ const BanList = ({ socket }) => {
 
   const deletePolicy = (id) => {
     setloading(true);
-    axios
+    api
       .post("http://localhost:4001/policy/deletePolicy/" + id)
       .then((res) => {
         fetchData();

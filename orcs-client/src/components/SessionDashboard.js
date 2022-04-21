@@ -105,6 +105,7 @@ export default function SessionDashboard() {
 			return;
 		}
 		setPolicy(data.policy);
+		console.log(policy);
 	}
 
 	function getPolicyList() {

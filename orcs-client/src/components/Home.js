@@ -22,6 +22,7 @@ export default function Home() {
 		);
 
 		setPolicy(data.policy);
+		console.log(policy);
 	}
 
 	function getPolicyList() {
