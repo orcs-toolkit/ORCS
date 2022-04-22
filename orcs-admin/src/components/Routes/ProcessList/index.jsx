@@ -1,27 +1,31 @@
 import moment from "moment";
-import api from "../../utils/api";
+import api from "../../../utils/api";
 import { useLocation } from "react-router-dom";
 import React, { useState, useEffect, Fragment } from "react";
-import StyledTable from "../utilities/Table";
+import StyledTable from "../../utilities/Table";
 import "rsuite/dist/rsuite.min.css";
 import { Table } from "rsuite";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { Button } from "react-bootstrap";
+import AddProcessModal from "./AddProcessModal";
 
 const ProcessList = ({ socket }) => {
   const [dataList, setDataList] = useState([]);
-  const [role, setrole] = useState("");
   const [loading, setLoading] = useState(false);
   const url = useLocation().search;
   const paramValue = new URLSearchParams(url).get("macA") || "";
+  const [selectedProcess, setSelectedProcess] = useState("");
+  const [visible, setvisible] = useState(false);
+  const toggle = () => {
+    setvisible(!visible);
+  };
 
   useEffect(() => {
     const getDataListener = (data) => {
       if (dataList.length === 0) {
         let tempMacA = Object.keys(data)[0];
         if (tempMacA === paramValue) {
-          setrole(data[tempMacA].role || "");
           setDataList(
             data[tempMacA]["processData"]["list"]
               .sort((a, b) =>
@@ -34,27 +38,6 @@ const ProcessList = ({ socket }) => {
     };
     socket.on("data", getDataListener);
   }, [socket]);
-
-  const addSingleProcess = (role, processName) => {
-    if (role !== "") {
-      setLoading(true);
-      api
-        .post(`http://localhost:4001/policy/updateSinglePolicy`, {
-          role,
-          processName,
-        })
-        .then((res) => {
-          toast("Successfully added process to policy list");
-          setLoading(false);
-          console.log("Success", res);
-        })
-        .catch((err) => {
-          toast("Something went wrong");
-          setLoading(false);
-          console.log(err);
-        });
-    }
-  };
 
   return (
     <Fragment>
@@ -129,8 +112,12 @@ const ProcessList = ({ socket }) => {
               <Table.Cell>
                 {(rowData) => (
                   <Button
+                    socket={socket}
                     disabled={loading}
-                    onClick={() => addSingleProcess(role, rowData.name)}
+                    onClick={() => {
+                      setSelectedProcess(rowData.name);
+                      toggle();
+                    }}
                     className="btn btn-danger ml-3 shadow btn-xs sharp"
                   >
                     <i
@@ -143,6 +130,16 @@ const ProcessList = ({ socket }) => {
           </>
         }
       />
+      {visible && (
+        <AddProcessModal
+          visible={visible}
+          toggle={toggle}
+          processName={selectedProcess}
+          socket={socket}
+          setLoading={setLoading}
+          onSubmit={() => setSelectedProcess("")}
+        />
+      )}
     </Fragment>
   );
 };

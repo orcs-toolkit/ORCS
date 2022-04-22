@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import api from "../../../utils/api";
 import { Button, Modal, Form } from "react-bootstrap";
 import AsyncSelect from "react-select/async";
@@ -10,10 +10,11 @@ const BanListModal = ({
   propRole,
   onReload,
   propBanList,
-  socket
+  socket,
 }) => {
   const [role, setRole] = useState(propRole);
   const [error, setError] = useState(false);
+  const [favorites, setFavorites] = useState([]);
   const [banList, setBanList] = useState(
     propBanList.length === 0
       ? []
@@ -35,11 +36,11 @@ const BanListModal = ({
         )
         .then((res) => {
           onReload && onReload();
-          console.log(socket)
-          socket.emit('updated:Ban', {
+          console.log(socket);
+          socket.emit("updated:Ban", {
             role, // default, student, faculty, admin
-            status: edit ? 'updated' : 'created' // updated, deleted, created
-          })
+            status: edit ? "updated" : "created", // updated, deleted, created
+          });
           console.log("Success", res);
           toggle();
         })
@@ -51,6 +52,21 @@ const BanListModal = ({
       setError(true);
     }
   };
+
+  const fetchFavorites = () => {
+    api
+      .get("http://localhost:4001/policy/getfavoriteProcesses")
+      .then((res) => {
+        setFavorites(res.data.map((m) => ({ value: m, label: m })));
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  useEffect(() => {
+    fetchFavorites();
+  }, []);
 
   return (
     <Modal className="fade" show={visible}>
@@ -88,12 +104,7 @@ const BanListModal = ({
               }),
             }}
             isMulti={true}
-            defaultOptions={[
-              { value: "Chrome", label: "Chrome" },
-              { value: "Firefox", label: "Firefox" },
-              { value: "Utorrent", label: "Utorrent" },
-              { value: "Word", label: "Word" },
-            ]}
+            defaultOptions={favorites}
             value={banList}
             onChange={(newValue) => {
               setBanList(newValue);
