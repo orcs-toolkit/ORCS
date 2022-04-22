@@ -100,7 +100,7 @@ const MachineDetails = ({ socket }) => {
               <div className="card">
                 <div className="card-header align-items-center flex-wrap border-0 pb-0"></div>
                 <div className="card-body pt-0">
-                  <MemoryGraph socket={socket} />
+                  <MemoryGraph memData={machineData.mem} />
                   <h4 className="fs-20 text-center text-black mb-4 mr-3">
                     Resource Utilization
                   </h4>
