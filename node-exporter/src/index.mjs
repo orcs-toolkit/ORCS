@@ -22,8 +22,9 @@ app.use(
 	})
 );
 
-global.name = 'NA';
-global.role = 'default';
+global.name = process.env.CLOUD_NAME || 'NA';
+global.role = process.env.CLOUD_ROLE || 'default';
+
 loadPolicyByRole(global.role);
 let socket = io(process.env.SOCKET_URI, {
 	reconnection: true,

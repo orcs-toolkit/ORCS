@@ -10,7 +10,8 @@
   },
   "scripts": {
     "start": "node --experimental-modules src/index.mjs",
-    "serve": "nodemon --experimental-modules src/index.mjs"
+    "serve": "nodemon --experimental-modules src/index.mjs",
+    "serve:cloud": "node cross-env CLOUD_ROLE=cloud --experimental-modules src/index.mjs"
   },
   "keywords": [],
   "author": "",
@@ -21,6 +22,7 @@
     "cli-spinner": "^0.2.10",
     "commander": "^9.0.0",
     "cors": "^2.8.5",
+    "cross-env": "^7.0.3",
     "dotenv": "^10.0.0",
     "express": "^4.17.3",
     "farmhash": "^3.2.2",
