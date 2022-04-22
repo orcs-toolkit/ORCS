@@ -39,58 +39,45 @@ const LogsList = () => {
     <FullScreenLoader />
   ) : (
     <Fragment>
-      <Container fluid className="main-content-container px-4">
+      <Container
+        fluid
+        className="main-content-container px-4"
+        style={{ background: "#F7F8FB" }}
+      >
+        <h3 className="text-gray py-3 border-bottom font-w600">Logs</h3>
         <Row>
-          <Col lg={12}>
-            <div
-              className="d-flex text-center py-2 my-2"
-              style={{ justifyContent: "space-between" }}
-            >
-              <h4 className="fs-22 font-w600">Logs Worklist</h4>
-            </div>
+          <Col lg={3}>
+            <h4 className="fs-22 text-gray border-bottom font-w600">Date</h4>
           </Col>
-          <Col lg={12}>
-            <Row>
-              {data.map((d) => (
-                <Col lg={6}>
-                  <Card
-                    className={`border border-${
-                      d.message === "connected" ? "success" : "danger"
-                    } rounded card shadow_1`}
-                  >
-                    <Card.Title className="m-4 d-flex justify-content-between">
-                      <h4 className="py-2 text-primary">{d.label}</h4>
-                    </Card.Title>
-                    <ListGroup
-                      className="list-group-flush overflow-auto"
-                      style={{ maxHeight: 200 }}
-                    >
-                      <ListGroupItem>
-                        <h4>Timestamp: {moment(d.timestamp).format("lll")}</h4>
-                      </ListGroupItem>
-                      <ListGroupItem>
-                        <h4>Message: {d.message}</h4>
-                      </ListGroupItem>
-                      <ListGroupItem>
-                        <h4>Data: {d.meta?.data}</h4>
-                      </ListGroupItem>
-                    </ListGroup>
-                  </Card>
-                </Col>
-              ))}
-            </Row>
-            <div className="text-center">
-              <Button
-                className="btn-link bg-transparent py-2 mb-2"
-                onClick={() => {
-                  setlimit(limit + 20);
-                }}
-              >
-                Load More
-              </Button>
-            </div>
+          <Col lg={3}>
+            <h4 className="fs-22 text-gray border-bottom font-w600">Label</h4>
+          </Col>
+
+          <Col lg={3}>
+            <h4 className="fs-22 text-gray border-bottom font-w600">Message</h4>
+          </Col>
+
+          <Col lg={3}>
+            <h4 className="fs-22 text-gray border-bottom font-w600">Data</h4>
           </Col>
         </Row>
+        <Row className="overflow-auto" style={{ maxHeight: 550 }}>
+          {data.map((d) => (
+            <h4 className="py-2">{`-> ${moment(d.timestamp).format("lll")} - ${
+              d.label
+            } - ${d.message} - ${d.meta?.data}`}</h4>
+          ))}
+        </Row>
+        <div className="text-center">
+          <Button
+            className="btn-link bg-transparent py-2 mb-2"
+            onClick={() => {
+              setlimit(limit + 20);
+            }}
+          >
+            Load More
+          </Button>
+        </div>
       </Container>
     </Fragment>
   );
