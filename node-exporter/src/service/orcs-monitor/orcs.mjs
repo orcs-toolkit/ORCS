@@ -1,5 +1,5 @@
-import OrcsMonitor from "./orcs-monitor.mjs";
-const monitor = new OrcsMonitor(["firefox"], 4000);
+import OrcsMonitor from './orcs-monitor.mjs';
+const monitor = new OrcsMonitor(['firefox'], 4000);
 import axios from 'axios';
 
 // {
@@ -14,10 +14,16 @@ import axios from 'axios';
 //     }
 // }
 
-export async function loadPolicyByRole(role){
-  // console.log(`localhost:4001/policy/getRolePolicy/${role}`);
-    axios.get(`http://localhost:4001/policy/getRolePolicy/${role}`).then((response) => {
-      console.log("\n updated : " + response.data.policy.banList);
-      monitor.updateBanList(response.data.policy.banList);
-    });
+export async function loadPolicyByRole(role) {
+	// console.log(`localhost:4001/policy/getRolePolicy/${role}`);
+	axios
+		.get(
+			`${
+				process.env.API_URI || 'http://127.0.0.1:4001'
+			}/policy/getRolePolicy/${role}`
+		)
+		.then((response) => {
+			console.log('\n updated : ' + response.data.policy.banList);
+			monitor.updateBanList(response.data.policy.banList);
+		});
 }
