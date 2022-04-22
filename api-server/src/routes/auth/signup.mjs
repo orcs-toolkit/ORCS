@@ -33,8 +33,10 @@ router.post(
 			email,
 			password,
 			isAdmin,
-			role,
+			role: role.toLowerCase(),
 		});
+
+		console.log(user);
 
 		const userToken = jwt.sign(
 			{
