@@ -9,7 +9,7 @@ import io from 'socket.io-client';
 
 import { socketMain } from './socketMain.mjs';
 import { loadingAnim } from './cli/loadingAnim.mjs';
-import {loadPolicyByRole} from "./service/orcs-monitor/orcs.mjs";
+import { loadPolicyByRole } from './service/orcs-monitor/orcs.mjs';
 
 const app = express();
 app.use(express.json());
@@ -61,6 +61,7 @@ app.post('/logout', (req, res) => {
 	global.role = 'default';
 	global.name = 'NA';
 	console.log(global.role);
+	loadPolicyByRole(global.role);
 	res.send({
 		message: `Role set to: ${global.role}`,
 		success: true,
