@@ -8,12 +8,15 @@ export default class LinuxMonitorService {
     this.routine();
   }
   async pskill(processName) {
-    find("name", processName.toLowerCase(), true).then(function (list) {
+    find("name", processName.toLowerCase(), true).then(function (list) { 
+      if(list.length != 0){
+      notifier.notify({
+        title: 'Warning !',
+        message: list[0].name + ' is a restricted program please do not use! Program will be terminated',
+        timeout:5
+      });     
+      }
       list.forEach(async (process) => {
-        notifier.notify({
-          title: 'Warning !',
-          message: process.name + ' is a restricted program please do not use! Program will be terminated'
-        });
         ps.kill(process.pid), function( err ) {
           if (err) {
               throw new Error( err );
