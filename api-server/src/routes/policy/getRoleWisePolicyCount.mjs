@@ -11,7 +11,7 @@ router.get("/", async(req, res) => {
                         policyId: "$_id",
                         role: "$role",
                     },
-                    list: { $push: "$banList" },
+                    list: { $addToSet: "$banList" },
                 },
             },
             { $project: { policyid: "$_id.policyId", _id: "$_id.role", list: 1 } },
