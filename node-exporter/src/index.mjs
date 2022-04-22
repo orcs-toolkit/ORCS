@@ -23,7 +23,7 @@ app.use(
 );
 
 global.name = 'NA';
-global.role = 'Default';
+global.role = 'default';
 loadPolicyByRole(global.role);
 let socket = io(process.env.SOCKET_URI, {
 	reconnection: true,

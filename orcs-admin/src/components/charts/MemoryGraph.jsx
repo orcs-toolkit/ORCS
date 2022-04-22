@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, memo } from "react";
 import { useLocation } from "react-router-dom";
 import ReactApexChart from "react-apexcharts";
 import ApexCharts from "apexcharts";
@@ -38,7 +38,7 @@ const MemoryGraph = ({ socket }) => {
       curve: "smooth",
     },
     title: {
-      text: "Free CPU [%] ",
+      text: "Active Memory Usage [GB] ",
       align: "left",
     },
     markers: {
@@ -57,7 +57,9 @@ const MemoryGraph = ({ socket }) => {
     const getDataListener = (data) => {
       let tempMacA = Object.keys(data)[0];
       if (tempMacA === paramValue) {
-        updateData(data[tempMacA]["mem"]["active"]);
+        let mem = data[tempMacA]["mem"]["active"]
+        let memInMB = Math.floor((mem / 1073741824) * 100) / 100
+        updateData(memInMB);
       }
     };
     socket.on("data", getDataListener);
