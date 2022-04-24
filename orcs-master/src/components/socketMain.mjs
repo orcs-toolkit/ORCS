@@ -14,6 +14,8 @@ import { socket_events } from '../types/events.mjs';
 const logger = new Logger();
 
 export function socketMain(io, socket, workerId) {
+	const adminNamespace = io.of('/admin');
+
 	(async () => {
 		try {
 			await mongoose.connect(process.env.MONGO_URI);
@@ -26,25 +28,6 @@ export function socketMain(io, socket, workerId) {
 	let macA;
 
 	// console.log('Socket Session: ', socket.request.session);
-
-	socket.on('clientAuth', async (key) => {
-		if (key === process.env.AUTH_SECRET) {
-			socket.join(socket_events.emit.ADMIN);
-			winLogger.log('info', {
-				message: 'disconnected',
-				data: `Admin with ID ${socket.id} joined!`,
-			});
-			io.to(socket_events.emit.ADMIN).emit(socket_events.emit.LOGS, {
-				type: 'connected',
-				data: `Admin with ID ${socket.id} joined!`,
-			});
-			logger.info(`Admin with ID ${socket.id} joined!`);
-			setActiveState(io);
-		} else {
-			// invalid client
-			socket.disconnect(true);
-		}
-	});
 
 	socket.on('logout', async () => {
 		var room = Array.from(socket.rooms);
@@ -59,7 +42,7 @@ export function socketMain(io, socket, workerId) {
 			message: 'disconnected',
 			data: `Client with socket id: ${socket.id} has left the room ${room[1]}!`,
 		});
-		io.to(socket_events.emit.ADMIN).emit(socket_events.emit.LOGS, {
+		adminNamespace.to(socket_events.emit.ADMIN).emit(socket_events.emit.LOGS, {
 			type: 'disconnected',
 			data: `Client with socket id: ${socket.id} has left the room ${room[1]}!`,
 		});
@@ -68,14 +51,14 @@ export function socketMain(io, socket, workerId) {
 	});
 
 	socket.on(socket_events.listen.DISCONNECT, async () => {
-		onMachineDisconnect(macA, io);
+		onMachineDisconnect(macA, adminNamespace);
 
 		winLogger.log('info', {
 			message: 'disconnected',
 			data: `Client with socket id: ${socket.id} has disconnected!`,
 		});
 
-		io.to(socket_events.emit.ADMIN).emit(socket_events.emit.LOGS, {
+		adminNamespace.to(socket_events.emit.ADMIN).emit(socket_events.emit.LOGS, {
 			type: 'disconnected',
 			data: `Client with socket id: ${socket.id} has disconnected!`,
 		});
@@ -89,7 +72,9 @@ export function socketMain(io, socket, workerId) {
 	});
 
 	socket.on(socket_events.listen.PERF_DATA, (data) => {
-		io.to(socket_events.emit.ADMIN).emit(socket_events.emit.DATA, data);
+		adminNamespace
+			.to(socket_events.emit.ADMIN)
+			.emit(socket_events.emit.DATA, data);
 	});
 
 	socket.on('updated:Ban', (data) => {
@@ -102,6 +87,8 @@ export function socketMain(io, socket, workerId) {
 			message: `${dateData.type}`,
 			data: `${dateData.data}`,
 		});
-		io.to(socket_events.emit.ADMIN).emit(socket_events.emit.LOGS, dateData);
+		adminNamespace
+			.to(socket_events.emit.ADMIN)
+			.emit(socket_events.emit.LOGS, dateData);
 	});
 }

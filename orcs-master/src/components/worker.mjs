@@ -1,33 +1,18 @@
 import express from 'express';
 import cluster from 'cluster';
 import { Server } from 'socket.io';
-import session from 'express-session';
-import redisstore from 'connect-redis';
+import Redis from 'ioredis';
 import redisAdapter from '@socket.io/redis-adapter';
-import passport from 'passport';
 
-import { redisClient } from '../services/redis-init.mjs';
 import { socketMain } from './socketMain.mjs';
 import { Logger } from '../services/logger.mjs';
 import { winLogger } from '../services/winstonLogger.mjs';
+import { setActiveState } from '../services/MachineCheckAndAdd.mjs';
+import { socket_events } from '../types/events.mjs';
+
 const logger = new Logger();
 
-var RedisStore = redisstore(session);
-var sessionStore = new RedisStore({ client: redisClient });
-
 export function isWorker() {
-	const sessionMiddleware = session({
-		name: 'auth',
-		secret: String(process.env.SECRET_KEY),
-		resave: true,
-		saveUninitialized: false,
-		store: sessionStore,
-		cookie: {
-			secure: process.env.NODE_ENV === 'production' ? 'true' : 'auto',
-			maxAge: 60000,
-		},
-	});
-
 	// We don't need a port here because Master processes the requests.
 	let app = express();
 
@@ -43,7 +28,7 @@ export function isWorker() {
 	// server is assumed to be on localhost:6379. You don't have to
 	// specify them explicitly unless you want to change them.
 	// redis-cli monitor.
-	const pubClient = redisClient;
+	const pubClient = new Redis();
 	pubClient.on('connect', () => logger.workerInfo('connected to Redis Server'));
 	pubClient.on('error', (err) => {
 		logger.error("Couldn't establish connection to redis server");
@@ -61,12 +46,33 @@ export function isWorker() {
 	// io.use(function (socket, next) {
 	// 	sessionMiddleware(socket.handshake, {}, next);
 	// });
-	io.use(wrap(sessionMiddleware));
-	io.use(wrap(passport.initialize()));
-	io.use(wrap(passport.session()));
 
 	// io.use(sharedsession(sessionMiddleware));
 	// io.use(wrap(passport.authenticate(['jwt', 'google'])));
+
+	const adminNamespace = io.of('/admin');
+	adminNamespace.on('connection', (socket) => {
+		socket.on('clientAuth', async (key) => {
+			if (key === process.env.AUTH_SECRET) {
+				socket.join(socket_events.emit.ADMIN);
+				winLogger.log('info', {
+					message: 'disconnected',
+					data: `Admin with ID ${socket.id} joined!`,
+				});
+				adminNamespace
+					.to(socket_events.emit.ADMIN)
+					.emit(socket_events.emit.LOGS, {
+						type: 'connected',
+						data: `Admin with ID ${socket.id} joined!`,
+					});
+				logger.info(`Admin with ID ${socket.id} joined!`);
+				setActiveState(adminNamespace);
+			} else {
+				// invalid client
+				socket.disconnect(true);
+			}
+		});
+	});
 
 	io.on('connection', (socket) => {
 		socketMain(io, socket, cluster.worker.id);
