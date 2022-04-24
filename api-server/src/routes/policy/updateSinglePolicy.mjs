@@ -5,7 +5,7 @@ const router = express.Router();
 
 router.post("/", async(req, res) => {
     try {
-        const data = await Policy.updateOne({ role: req.body.role }, { $push: { banList: req.body.processName } });
+        const data = await Policy.updateOne({ role: req.body.role }, { $addToSet: { banList: req.body.processName } });
         res.status(200).send(data);
     } catch (err) {
         res.status(500).send({

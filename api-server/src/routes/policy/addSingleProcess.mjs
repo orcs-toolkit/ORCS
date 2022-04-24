@@ -11,7 +11,7 @@ router.post("/", async(req, res) => {
         {
             role: { $in: req.body.role },
         }, {
-            $push: { banList: req.body.processName },
+            $addToSet: { banList: req.body.processName },
         }, { $new: true }
     );
     if (req.body.addToFavorite) {
