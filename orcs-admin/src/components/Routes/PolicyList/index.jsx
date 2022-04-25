@@ -65,7 +65,7 @@ const BanList = ({ socket }) => {
           <Col lg={12}>
             <Row>
               {data.map((d) => (
-                <Col lg={3}>
+                <Col lg={4}>
                   <Card className="border border-primary rounded card shadow_1">
                     <Card.Title className="m-4 d-flex justify-content-between">
                       <h4 className="py-2 text-primary">{d._id}</h4>
@@ -80,7 +80,7 @@ const BanList = ({ socket }) => {
                         className="bg-transparent text-danger"
                         onClick={() => deletePolicy(d.policyid)}
                       >
-                        <i className={`bx bx-trash fs-20`}></i>
+                        Delete
                       </Button>
                     </Card.Title>
                     <ListGroup

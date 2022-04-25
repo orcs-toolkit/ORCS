@@ -1,14 +1,13 @@
 import moment from "moment";
-import api from "../../../utils/api";
 import { useLocation } from "react-router-dom";
 import React, { useState, useEffect, Fragment } from "react";
 import StyledTable from "../../utilities/Table";
 import "rsuite/dist/rsuite.min.css";
 import { Table } from "rsuite";
-import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { Button } from "react-bootstrap";
 import AddProcessModal from "./AddProcessModal";
+import { formatBytes } from "../../utilities/formatSize";
 
 const ProcessList = ({ socket }) => {
   const [dataList, setDataList] = useState([]);
@@ -63,17 +62,19 @@ const ProcessList = ({ socket }) => {
             </Table.Column>
             <Table.Column width={140}>
               <Table.HeaderCell>Cpu Usage</Table.HeaderCell>
-              <Table.Cell>
-                {(rowData) => rowData.cpu.toFixed(2) + "gb"}
-              </Table.Cell>
+              <Table.Cell>{(rowData) => formatBytes(rowData.cpu)}</Table.Cell>
             </Table.Column>
             <Table.Column width={140} fixed>
               <Table.HeaderCell>Virtual Memory Size</Table.HeaderCell>
-              <Table.Cell dataKey="memVsz" />
+              <Table.Cell>
+                {(rowData) => formatBytes(rowData.memVsz)}
+              </Table.Cell>
             </Table.Column>
             <Table.Column width={140} fixed>
               <Table.HeaderCell>Memory RSS</Table.HeaderCell>
-              <Table.Cell dataKey="memRss" />
+              <Table.Cell>
+                {(rowData) => formatBytes(rowData.memRss)}
+              </Table.Cell>
             </Table.Column>
             <Table.Column width={140} fixed>
               <Table.HeaderCell>User</Table.HeaderCell>
@@ -120,9 +121,7 @@ const ProcessList = ({ socket }) => {
                     }}
                     className="btn btn-danger ml-3 shadow btn-xs sharp"
                   >
-                    <i
-                      className={`bx bx-${loading ? "circle" : "plus"} fs-15`}
-                    ></i>
+                    {loading ? "o" : "+"}
                   </Button>
                 )}
               </Table.Cell>

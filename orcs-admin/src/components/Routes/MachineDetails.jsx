@@ -15,6 +15,7 @@ import {
   Icon09,
 } from "../../assets/images/SearchJobsIcon";
 import StyledCard from "../utilities/StyledCard";
+import { formatBytes } from "../utilities/formatSize";
 
 const MachineDetails = ({ socket }) => {
   var icons = [
@@ -32,13 +33,6 @@ const MachineDetails = ({ socket }) => {
   const paramValue = new URLSearchParams(url).get("macA") || "";
   const [machineData, setMachineData] = useState(undefined);
   const [defaultIcon, setdefaultIcon] = useState(Icon01);
-
-  const formatBytes = (size) => {
-    const sizes = ["Bytes", "KB", "MB", "GB"];
-    if (size == 0) return "0 Bytes";
-    var i = Math.floor(Math.log(size) / Math.log(1024));
-    return parseFloat((size / Math.pow(1024, i)).toFixed(1)) + " " + sizes[i];
-  };
 
   useEffect(() => {
     setdefaultIcon(icons[Math.floor(Math.random() * icons.length)]);
