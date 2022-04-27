@@ -1,6 +1,7 @@
 import React, { useState, useEffect, memo } from "react";
 import ReactApexChart from "react-apexcharts";
 import ApexCharts from "apexcharts";
+import { formatBytes } from "../utilities/formatSize";
 
 const MemoryGraph = ({ memData }) => {
   const [series, setSeries] = useState([
@@ -52,9 +53,9 @@ const MemoryGraph = ({ memData }) => {
   };
 
   useEffect(() => {
-    let mem = memData?.active;
-    let memInMB = Math.floor((mem / 1073741824) * 100) / 100;
-    updateData(memInMB);
+    let mem = memData?.used;
+    let memInMb = formatBytes(mem);
+    updateData(memInMb);
   }, [memData]);
 
   const updateData = (y) => {
