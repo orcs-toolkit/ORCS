@@ -77,9 +77,9 @@ export function socketMain(io, socket, workerId) {
 			.emit(socket_events.emit.DATA, data);
 	});
 
-	socket.on('updated:Ban', (data) => {
+	socket.on(socket_events.listen.UPDATED_BAN, (data) => {
 		logger.info(`Sending ${data} to node-exporter`);
-		socket.broadcast.emit('updated:Ban', data);
+		socket.broadcast.emit(socket_events.emit.UPDATED_BAN, data);
 	});
 
 	socket.on(socket_events.listen.NODE_LOGS, async (dateData) => {
