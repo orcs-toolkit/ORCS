@@ -131,7 +131,7 @@ const AddUserModal = ({ visible, toggle, edit, propUser, onReload }) => {
                 zIndex: 9999,
               }),
             }}
-            defaultOptions={[{ value: "admin", label: "Admin" }, ...roles]}
+            defaultOptions={roles}
             value={selectedRole}
             onChange={(newValue) => {
               setSelectedRole(newValue);
