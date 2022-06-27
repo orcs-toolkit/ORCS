@@ -20,7 +20,7 @@ const LogsList = () => {
   const fetchData = () => {
     setloading(true);
     api
-      .get("http://localhost:4001/logs?limit=" + limit)
+      .get("/logs?limit=" + limit)
       .then((res) => {
         setdata(res.data);
         setloading(false);

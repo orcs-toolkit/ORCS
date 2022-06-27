@@ -15,12 +15,12 @@ const AddUserModal = ({ visible, toggle, edit, propUser, onReload }) => {
 
   const handleSubmit = () => {
     setLoading(true);
-    let request = api.post(`http://localhost:4001/auth/register`, {
+    let request = api.post(`/auth/register`, {
       ...user,
       isAdmin: user.role === "Admin",
     });
     if (edit) {
-      request = api.post(`http://localhost:4001/user/updateUser/${user.id}`, {
+      request = api.post(`/user/updateUser/${user.id}`, {
         ...user,
       });
     }
@@ -46,7 +46,7 @@ const AddUserModal = ({ visible, toggle, edit, propUser, onReload }) => {
 
   const fetchRoles = () => {
     api
-      .get("http://localhost:4001/policy/getRoleWisePolicy")
+      .get("/policy/getRoleWisePolicy")
       .then((res) => {
         setroles(res.data.map((m) => ({ value: m._id, label: m._id })));
       })

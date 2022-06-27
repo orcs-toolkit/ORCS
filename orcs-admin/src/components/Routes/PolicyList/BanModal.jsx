@@ -27,13 +27,10 @@ const BanListModal = ({
     if (role !== "") {
       setError(false);
       api
-        .post(
-          `http://localhost:4001/policy/${edit ? "updatePolicy" : "setPolicy"}`,
-          {
-            role,
-            banList: banList.map((b) => b.value),
-          }
-        )
+        .post(`/policy/${edit ? "updatePolicy" : "setPolicy"}`, {
+          role,
+          banList: banList.map((b) => b.value),
+        })
         .then((res) => {
           onReload && onReload();
           console.log(socket);
@@ -55,7 +52,7 @@ const BanListModal = ({
 
   const fetchFavorites = () => {
     api
-      .get("http://localhost:4001/policy/getfavoriteProcesses")
+      .get("/policy/getfavoriteProcesses")
       .then((res) => {
         setFavorites(res.data.map((m) => ({ value: m, label: m })));
       })

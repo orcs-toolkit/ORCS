@@ -20,7 +20,7 @@ const UserList = () => {
   const fetchData = () => {
     setloading(true);
     axios
-      .get("http://localhost:4001/user/getAllUsers")
+      .get("/user/getAllUsers")
       .then((res) => {
         setdata(res.data);
         setloading(false);
@@ -34,7 +34,7 @@ const UserList = () => {
   const deleteUser = (id) => {
     setloading(true);
     axios
-      .post("http://localhost:4001/user/deleteUser/" + id)
+      .post("/user/deleteUser/" + id)
       .then((res) => {
         fetchData();
       })
