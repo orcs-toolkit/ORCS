@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 
-import axios from 'axios';
+import api from '../services/api';
 
 export default function Login() {
 	const [email, setEmail] = useState('');
@@ -18,10 +18,7 @@ export default function Login() {
 		};
 
 		try {
-			const { data } = await axios.post(
-				'http://localhost:4001/auth/login',
-				payload
-			);
+			const { data } = await api.post('/auth/login', payload);
 			if (data.success === true) {
 				window.localStorage.setItem('jwt', data.token);
 				history.push('/session');

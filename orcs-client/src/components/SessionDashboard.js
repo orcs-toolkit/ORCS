@@ -1,29 +1,27 @@
 import { useEffect, useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 
-import axios from 'axios';
+import api from '../services/api';
+import nodeApi from '../services/nodeApi';
 
 export default function SessionDashboard() {
 	const [user, setUser] = useState({});
 	const [policy, setPolicy] = useState([]);
 	const [showList, setShowList] = useState(false);
-	const [sessionStarted, setSession] = useState('');
-	const [error, setError] = useState('');
+	const [sessionStarted, setSession] = useState(null);
+	const [error, setError] = useState(null);
 	const history = useHistory();
 
 	useEffect(() => {
 		const token = localStorage.getItem('jwt');
 
 		(async () => {
-			const { data } = await axios.get(
-				'http://localhost:4001/auth/currentuser',
-				{
-					headers: {
-						'Content-Type': 'application/json',
-						Authorization: `Bearer ${token}`,
-					},
-				}
-			);
+			const { data } = await api.get('/auth/currentuser', {
+				headers: {
+					'Content-Type': 'application/json',
+					Authorization: `Bearer ${token}`,
+				},
+			});
 			setUser(data.currentUser);
 		})();
 	}, []);
@@ -37,7 +35,7 @@ export default function SessionDashboard() {
 		};
 
 		try {
-			const { data } = await axios.post('http://localhost:4002/role', payload, {
+			const { data } = await nodeApi.post('/role', payload, {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json',
@@ -51,11 +49,11 @@ export default function SessionDashboard() {
 			}
 
 			setSession('Session started!');
-			setError('');
+			setError(null);
 		} catch (err) {
 			console.log('Unable to POST payload', err);
 			setError('Something went wrong, please try again');
-			setSession('');
+			setSession(null);
 		}
 	}
 
@@ -70,18 +68,14 @@ export default function SessionDashboard() {
 		};
 
 		try {
-			const { data } = await axios.post(
-				'http://localhost:4002/logout',
-				payload,
-				{
-					method: 'POST',
-					headers: {
-						'Content-Type': 'application/json',
-						'Allow-Origin-With-Credentials': '*',
-						'Access-Control-Allow-Origin': '*',
-					},
-				}
-			);
+			const { data } = await nodeApi.post('/logout', payload, {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+					'Allow-Origin-With-Credentials': '*',
+					'Access-Control-Allow-Origin': '*',
+				},
+			});
 			// console.log(typeof data.success);
 			if (!data.success) {
 				setSession('Something went wrong, please try again');
@@ -98,9 +92,7 @@ export default function SessionDashboard() {
 	async function fetchPolicy(e) {
 		e.preventDefault();
 
-		const { data } = await axios.get(
-			`http://localhost:4001/policy/getRolePolicy/${user.role}`
-		);
+		const { data } = await api.get(`/policy/getRolePolicy/${user.role}`);
 		if (!data.policy) {
 			return;
 		}
@@ -153,18 +145,23 @@ export default function SessionDashboard() {
 										</div>
 
 										<div className="row">
-											<div className="col-sm-6">
-												<form onSubmit={handleSession} className="mx-1 mx-md-4">
-													<div className="d-flex mb-lg-4">
-														<button
-															type="submit"
-															className="btn btn-primary btn-lg"
-														>
-															Start your session!
-														</button>
-													</div>
-												</form>
-											</div>
+											{!sessionStarted ? (
+												<div className="col-sm-6">
+													<form
+														onSubmit={handleSession}
+														className="mx-1 mx-md-4"
+													>
+														<div className="d-flex mb-lg-4">
+															<button
+																type="submit"
+																className="btn btn-primary btn-lg"
+															>
+																Start your session!
+															</button>
+														</div>
+													</form>
+												</div>
+											) : null}
 
 											<div className="col-sm-6">
 												<form onSubmit={handleLogout} className="mx-1 mx-md-4">

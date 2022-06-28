@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import axios from 'axios';
+import api from '../services/api';
+import nodeApi from '../services/nodeApi';
 
 export default function Home() {
 	const [user, setUser] = useState({});
@@ -9,7 +10,7 @@ export default function Home() {
 
 	useEffect(() => {
 		(async () => {
-			const { data } = await axios.get('http://localhost:4002/currentuser');
+			const { data } = await nodeApi.get('/currentuser');
 			setUser(data.user);
 		})();
 	}, []);
@@ -17,9 +18,7 @@ export default function Home() {
 	async function fetchPolicy(e) {
 		e.preventDefault();
 
-		const { data } = await axios.get(
-			`http://localhost:4001/policy/getRolePolicy/${user.role}`
-		);
+		const { data } = await api.get(`/policy/getRolePolicy/${user.role}`);
 
 		if (!data.policy) {
 			return;

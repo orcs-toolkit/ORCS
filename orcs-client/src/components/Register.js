@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
-import axios from 'axios';
+
+import api from '../services/api';
 
 export default function Register() {
 	const [name, setName] = useState('');
@@ -21,10 +22,7 @@ export default function Register() {
 		console.log(payload);
 
 		try {
-			const { data } = await axios.post(
-				'http://localhost:4001/auth/register',
-				payload
-			);
+			const { data } = await api.post('/auth/register', payload);
 			if (data.success === true) {
 				window.localStorage.setItem('jwt', data.token);
 				history.push('/session');

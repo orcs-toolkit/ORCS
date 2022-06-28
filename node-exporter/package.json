@@ -11,7 +11,7 @@
   "scripts": {
     "start": "node --experimental-modules src/index.mjs",
     "serve": "nodemon --experimental-modules src/index.mjs",
-    "serve:cloud": "cross-env CLOUD_ROLE=cloud node --experimental-modules src/index.mjs"
+    "serve:cloud": "cross-env CLOUD_NAME=VMUser CLOUD_ROLE=cloud node --experimental-modules src/index.mjs"
   },
   "keywords": [],
   "author": "",

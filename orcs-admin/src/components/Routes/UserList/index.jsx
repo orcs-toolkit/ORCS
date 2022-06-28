@@ -1,6 +1,7 @@
 import React, { useState, useEffect, Fragment } from "react";
 import moment from "moment";
-import axios from "axios";
+// import axios from "axios";
+import api from "../../../utils/api";
 import {
   Card,
   ListGroup,
@@ -19,7 +20,7 @@ const UserList = () => {
 
   const fetchData = () => {
     setloading(true);
-    axios
+    api
       .get("/user/getAllUsers")
       .then((res) => {
         setdata(res.data);
@@ -33,7 +34,7 @@ const UserList = () => {
 
   const deleteUser = (id) => {
     setloading(true);
-    axios
+    api
       .post("/user/deleteUser/" + id)
       .then((res) => {
         fetchData();

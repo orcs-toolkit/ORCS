@@ -26,7 +26,7 @@ const SingleMachine = (props) => {
             {icon}
           </div>
           <h4 className="text-primary font-w500 d-block">
-            Status: {isActive ? "Connected" : "Offline"}
+            Status: {name !== 'NA' ? "Authenticated" : "Not Authenticated"}
           </h4>
           <div className="d-flex align-items-center mt-4">
             <Link
