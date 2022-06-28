@@ -13,7 +13,7 @@ router.get('/', async (req, res) => {
 	if (token === 'null' || '' || !token)
 		return res.status(200).send({ currentUser: null });
 
-	const payload = jwt.verify(token, String(process.env.SECRET_KEY));
+	const payload = jwt.verify(token,process.env.SECRET_KEY);
 
 	res.status(200).send({
 		currentUser: payload,

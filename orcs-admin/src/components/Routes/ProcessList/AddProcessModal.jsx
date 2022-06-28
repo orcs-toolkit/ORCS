@@ -2,12 +2,22 @@ import React, { useState, useEffect } from "react";
 import api from "../../../utils/api";
 import { Button, Modal, Form } from "react-bootstrap";
 import AsyncSelect from "react-select/async";
+import io from 'socket.io-client';
 
-const AddProcessModal = ({ visible, toggle, processName, socket }) => {
+const AddProcessModal = ({ visible, toggle, processName }) => {
   const [roles, setRoles] = useState([]);
   const [addToFavorite, setAddToFavorite] = useState([]);
   const [selectedRoles, setSelectedRoles] = useState([]);
   const [error, setError] = useState(false);
+  const [socket, setSocket] = useState(null);
+
+	useEffect(() => {
+		let newSocket = io.connect('http://localhost:4000');
+		newSocket.emit('clientAuth', process.env.REACT_APP_AUTH_SECRET);
+		console.log('Newsocket', newSocket);
+		setSocket(newSocket);
+	}, []);
+
 
   const handleSubmit = () => {
     console.log("srjjjj", selectedRoles);

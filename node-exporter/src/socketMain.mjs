@@ -64,6 +64,7 @@ export function socketMain(socket) {
 		// console.log('From Admin', data);
 		// console.log(data.role);
 		// console.log(global.role);
+		console.log('Received a broadcast', global.role)
 
 		if (global.role === data.role) {
 			console.log("Hello");
