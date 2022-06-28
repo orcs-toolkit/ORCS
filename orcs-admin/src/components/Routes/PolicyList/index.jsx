@@ -19,7 +19,7 @@ const BanList = ({ socket }) => {
   const fetchData = () => {
     setloading(true);
     api
-      .get("http://localhost:4001/policy/getRoleWisePolicy")
+      .get("/policy/getRoleWisePolicy")
       .then((res) => {
         setdata(res.data);
         setloading(false);
@@ -33,7 +33,7 @@ const BanList = ({ socket }) => {
   const deletePolicy = (id) => {
     setloading(true);
     api
-      .post("http://localhost:4001/policy/deletePolicy/" + id)
+      .post("/policy/deletePolicy/" + id)
       .then((res) => {
         fetchData();
       })

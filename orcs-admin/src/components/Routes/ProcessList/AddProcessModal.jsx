@@ -24,7 +24,7 @@ const AddProcessModal = ({ visible, toggle, processName }) => {
     if (selectedRoles !== [] || selectedRoles[0].value === "All") {
       setError(false);
       api
-        .post(`http://localhost:4001/policy/addSingleProcess`, {
+        .post(`/policy/addSingleProcess`, {
           processName,
           ...(addToFavorite && { addToFavorite }),
           role: selectedRoles.map((b) => b.value),
@@ -51,7 +51,7 @@ const AddProcessModal = ({ visible, toggle, processName }) => {
 
   const fetchRoles = () => {
     api
-      .get("http://localhost:4001/policy/getRoleWisePolicy")
+      .get("/policy/getRoleWisePolicy")
       .then((res) => {
         setRoles(res.data.map((m) => ({ value: m._id, label: m._id })));
       })
