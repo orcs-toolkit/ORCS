@@ -15,7 +15,7 @@ const BanListModal = ({
   const [socket, setSocket] = useState(null);
 
 	useEffect(() => {
-		let newSocket = io.connect('http://192.168.56.10:4000');
+		let newSocket = io.connect('http://localhost:4000');
 		newSocket.emit('clientAuth', process.env.REACT_APP_AUTH_SECRET);
 		console.log('Newsocket', newSocket);
 		setSocket(newSocket);

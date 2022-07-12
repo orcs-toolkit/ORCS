@@ -12,6 +12,7 @@ const AddProcessModal = ({ visible, toggle, processName }) => {
   const [socket, setSocket] = useState(null);
 
 	useEffect(() => {
+    // Change here!
 		let newSocket = io.connect('http://localhost:4000');
 		newSocket.emit('clientAuth', process.env.REACT_APP_AUTH_SECRET);
 		console.log('Newsocket', newSocket);
