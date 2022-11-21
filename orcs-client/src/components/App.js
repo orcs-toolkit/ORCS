@@ -1,36 +1,22 @@
-import React from 'react';
-import { BrowserRouter, Route, Switch } from 'react-router-dom';
-import { Container } from 'shards-react';
+import { Route, Switch, HashRouter } from 'react-router-dom';
+import Home from './Home';
+import Login from './Login';
+import Register from './Register';
+import SessionDashboard from './SessionDashboard';
 
-import Header from './Header';
-import Dashboard from './Dashboard';
-import ProcessApp from './ProcessApp';
-import Login from './auth/Login';
-
-class App extends React.Component {
-	render() {
-		return (
-			<div>
-				<BrowserRouter>
-					<Header />
-					<br />
-					<Container fluid className="main-content-container px-4">
-						<Switch>
-							<Route path="/process">
-								<ProcessApp />
-							</Route>
-							<Route path="/login">
-								<Login />
-							</Route>
-							<Route exact path="/">
-								<Dashboard />
-							</Route>
-						</Switch>
-					</Container>
-				</BrowserRouter>
-			</div>
-		);
-	}
+function App() {
+	return (
+		<div>
+			<HashRouter>
+				<Switch>
+					<Route path="/" exact component={Home} />
+					<Route path="/login" component={Login} />
+					<Route path="/register" component={Register} />
+					<Route path="/session" component={SessionDashboard} />
+				</Switch>
+			</HashRouter>
+		</div>
+	);
 }
 
 export default App;

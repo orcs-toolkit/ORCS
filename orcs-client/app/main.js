@@ -1,18 +1,17 @@
-const { app, BrowserWindow, ipcMain } = require('electron');
+const { app, BrowserWindow } = require('electron');
 const path = require('path');
-const systemInfo = require('./systemInfo');
 
-let splashWindow, mainWindow, sysInfoInterval;
+let splashWindow, mainWindow;
 
 function createWindow() {
 	mainWindow = new BrowserWindow({
 		width: 1500,
 		height: 800,
 		webPreferences: {
-			preload: path.join(__dirname, './preload.js'),
 			nodeIntegration: false,
 			contextIsolation: true,
 		},
+		autoHideMenuBar: true,
 		resizable: false,
 		show: false,
 	});
@@ -26,7 +25,7 @@ function createWindow() {
 	});
 
 	splashWindow.loadFile('app/splash.html');
-	mainWindow.loadURL('http://localhost:3000');
+	mainWindow.loadURL('http://localhost:3001');
 
 	splashWindow.webContents.on('did-finish-load', () => {
 		splashWindow.show();
@@ -43,7 +42,6 @@ function createWindow() {
 
 	mainWindow.on('closed', () => {
 		mainWindow = null;
-		clearInterval(sysInfoInterval);
 	});
 }
 
@@ -59,12 +57,3 @@ app.on('window-all-closed', () => {
 app.on('activate', () => {
 	if (mainWindow === null) createWindow();
 });
-
-// sysInfoInterval = setInterval(() => {
-// 	systemInfo()
-// 		.then((data) => {
-// 			data.isActive = true;
-// 			mainWindow.webContents.send('sysInfo:fetch', data);
-// 		})
-// 		.catch((err) => console.log(err));
-// }, 1000);

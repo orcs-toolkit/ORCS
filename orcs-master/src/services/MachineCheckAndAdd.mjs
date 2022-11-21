@@ -24,17 +24,24 @@ export function setActiveState(io) {
 		docs.forEach((aMachine) => {
 			// on load assume all machines are offline
 			aMachine.isActive = false;
+			console.log('Connected', aMachine);
 			io.to('admin').emit('data', aMachine);
 		});
 	});
 }
 
 export function onMachineDisconnect(macA, io) {
-	Machine.find({ macA }, (err, docs) => {
-		if (docs.length > 0) {
+	Machine.findOne({ macA }, (err, docs) => {
+		if (docs) {
 			// send one last emit to client
-			docs[0].isActive = false;
-			io.to('admin').emit('data', docs[0]);
+			// docs[0]['isActive'] = false;
+			docs = { ...docs._doc, isActive: false };
+			// console.log('Disconnected', docs);
+			var x = {};
+			var systemMac = { ...x };
+			systemMac[macA] = docs;
+			console.log(systemMac);
+			io.to('admin').emit('data', systemMac);
 		}
 	});
 }

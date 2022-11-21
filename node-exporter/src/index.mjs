@@ -1,52 +1,76 @@
 import dotenv from 'dotenv';
 dotenv.config();
-import os from 'os';
+import express from 'express';
+import helmet from 'helmet';
+import morgan from 'morgan';
+import cors from 'cors';
+
 import io from 'socket.io-client';
-import { Logger } from './service/logger.mjs';
 
-import { performanceData } from './components/perfData.mjs';
-import { sysInfo } from './components/systemInfo.mjs';
+import { socketMain } from './socketMain.mjs';
+import { loadingAnim } from './cli/loadingAnim.mjs';
+import { loadPolicyByRole } from './service/orcs-monitor/orcs.mjs';
 
-var socket = io(process.env.SOCKET_URI);
-const logger = new Logger();
+const app = express();
+app.use(express.json());
+app.use(helmet());
+app.use(morgan('common'));
+app.use(
+	cors({
+		origin: true,
+		credentials: true,
+	})
+);
 
-socket.on('connect', () => {
-	logger.info('connected to socket server!');
+global.name = process.env.CLOUD_NAME || 'NA';
+global.role = process.env.CLOUD_ROLE || 'default';
 
-	// identify machine for unique marking, use mac address.
-	const nI = os.networkInterfaces();
-	let macA;
-
-	// loop through all the network-interfaces of this machine
-	// and find non-internal mac address
-	for (let key in nI) {
-		if (!nI[key][0].internal) {
-			macA = nI[key][0].mac;
-			break;
-		}
-	}
-
-	performanceData().then((data) => {
-		data.macA = macA;
-		socket.emit('initPerfData', data);
+loadPolicyByRole(global.role);
+let socket = io(process.env.SOCKET_URI, {
+	reconnection: true,
+	reconnectionDelay: 1000,
+	reconnectionDelayMax: 5000,
+	reconnectionAttempts: 5,
+});
+loadingAnim(socket);
+socketMain(socket);
+app.post('/role', async (req, res) => {
+	const { role, name } = req.body;
+	// console.log(`Received: ${role}, ${name}`);
+	global.role = role;
+	global.name = name;
+	// console.log(`Role: ${global.role}, Name: ${global.name}`);
+	loadPolicyByRole(global.role);
+	res.status(200).send({
+		message: `Role set to: ${global.role}`,
+		user: `Currently logged user: ${global.name}`,
+		success: true,
 	});
+});
 
-	let systemInfoInterval = setInterval(() => {
-		sysInfo()
-			.then((data) => {
-				data.macA = macA;
-				var x = {};
-				var systemMac = { ...x };
-				systemMac[macA] = data;
-				socket.emit('perfData', systemMac);
-			})
-			.catch((err) => {
-				socket.emit('sysDataError', err);
-				throw err;
-			});
-	}, 1000);
-
-	socket.on('disconnect', () => {
-		clearInterval(systemInfoInterval);
+app.get('/currentuser', (req, res) => {
+	res.status(200).send({
+		success: true,
+		user: {
+			name: global.name,
+			role: global.role,
+		},
 	});
+});
+
+app.post('/logout', (req, res) => {
+	global.role = 'default';
+	global.name = 'NA';
+	console.log(global.role);
+	loadPolicyByRole(global.role);
+	res.send({
+		message: `Role set to: ${global.role}`,
+		success: true,
+	});
+});
+
+const PORT = 4002;
+
+app.listen(PORT, () => {
+	console.log(`express server running on port: ${PORT}`);
 });
