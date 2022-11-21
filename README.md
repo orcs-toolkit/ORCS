@@ -6,7 +6,7 @@ A multi-threaded, fault-tolerant, scalable and cross-platform dashboard to view 
 
 ## Features
 
-- A Dashboard to get information like
+- A Dashboard to get information about:
   - System Information
   - CPU and Memory consumption
   - Network Interfaces
