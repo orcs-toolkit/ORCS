@@ -2,7 +2,7 @@
 
 # ORCS - Open Resource Control And Surveillance Toolkit
 
-A Realtime Dashboard to view metrics of multiple systems CPU, Memory and it's running processes.
+A multi-threaded, fault-tolerant, scalable and cross-platform dashboard to view real-time CPU and Memory usage of multiple systems and their processes. Its main focus is to control and monitor resource utilization through Identity Access Management (IAM).
 
 ## Features
 
